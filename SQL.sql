@@ -2,38 +2,24 @@ CREATE DATABASE hotcompostthesiswebsite;
 
 CREATE TABLE hotcompost(
 	id int AUTO_INCREMENT NOT NULL,
-	email varchar (50) UNIQUE NOT NULL,
-	password varchar (255) NOT NULL,
-	authtype varchar (30) NOT NULL,
-	firstname varchar (30) NOT NULL,
-	lastname varchar (30) NOT NULL,
-	CONSTRAINT PK_HotCompost
+	status varchar (30) NOT NULL,
+	createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	CONSTRAINT PK_hotcompost
 	PRIMARY KEY (id)
 );
 
 CREATE TABLE sensor(
     id int AUTO_INCREMENT NOT NULL,
-	hotCompost_id INT NOT NULL,
+	hotcompost_id INT NOT NULL,
     moisturePercent double NOT NULL,
 	temperatureCelsius double NOT NULL,
-    FOREIGN KEY (hotCompost_id) REFERENCES hotcompost(id)
+	time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    FOREIGN KEY (hotcompost_id) REFERENCES hotcompost(id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
     CONSTRAINT PK_sensor
     PRIMARY KEY (id)
 );
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
