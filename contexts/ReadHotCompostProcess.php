@@ -4,10 +4,11 @@ $mysqli = require_once "./database.php";
 
 // try to create and catch if there is error
 try{
-    // make a string of sql
+    // make a string of sql to check latest hot compost made
     $sql = "SELECT *
         FROM `hotcompost`
-        WHERE status NOT LIKE 'Completed';";
+        ORDER BY createdAt DESC
+        LIMIT 1;";
 
     // prepare the statement
     $stmt = $mysqli -> prepare ($sql);
@@ -18,20 +19,21 @@ try{
     // get the result from the statement
     $result = $stmt -> get_result();
 
-    // get all values from the executed statement
-    $hotCompost = $result -> fetch_all( MYSQLI_ASSOC );
+    // get only one from the executed statement
+    $hotCompost = $result -> fetch_assoc();
 
-    // if there is already hot compost in progress, return "In Progress", else return "None"
-    echo $hotCompost ? "In Progress" : "None";
+    // close statement and database free the result
+    $stmt -> close();
+    $result -> free();
+    $mysqli -> close();
+
+    // exit the status of the most recent hot compost
+    exit( $hotCompost['status'] == "Completed" ? "None" : $hotCompost['status'] );
 }
 // if there is error in query
 catch (Exception $e){
     // make an error response
-    echo "Error No: ". $e->getCode() ." - ". $e->getMessage();
+    exit ( "Error No: ". $e->getCode() ." - ". $e->getMessage() );
 }
-
-// close statement and database
-$stmt -> close();
-$mysqli -> close();
 
 ?>
