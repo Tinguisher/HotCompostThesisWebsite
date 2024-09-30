@@ -23,7 +23,13 @@ try{
     // make a string of sql
     $sql = "INSERT INTO `sensor`
             (`hotcompost_id`, `moisturePercent`, `temperatureCelsius`)
-        VALUES (1, ?, ?);";
+        VALUES ( (
+            SELECT id
+                FROM `hotcompost`
+                WHERE status LIKE 'In Progress'
+            ORDER BY createdAt DESC
+            LIMIT 1
+            ), ?, ?);";
 
     // prepare the statement
     $stmt = $mysqli -> prepare ($sql);

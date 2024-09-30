@@ -6,15 +6,8 @@ $mysqli = require_once "./database.php";
 try{
     // make a string of sql
     $sql = "SELECT *
-        FROM `sensor`, `hotcompost`
-        WHERE sensor.hotcompost_id = (
-            SELECT id
-                FROM `hotcompost`
-                WHERE status LIKE 'In Progress'
-            ORDER BY createdAt DESC
-            LIMIT 1
-            )
-            AND sensor.time > now() - interval 1 hour;";
+        FROM `hotcompost`
+        WHERE status NOT LIKE 'Completed';";
 
     // prepare the statement
     $stmt = $mysqli -> prepare ($sql);
@@ -26,10 +19,10 @@ try{
     $result = $stmt -> get_result();
 
     // get all values from the executed statement
-    $sensorInterval = $result -> fetch_all( MYSQLI_ASSOC );
+    $hotCompost = $result -> fetch_all( MYSQLI_ASSOC );
 
-    // if there is already read within an hour, return "read done", else return "request read"
-    echo $sensorInterval ? "read done" : "request read";
+    // if there is already hot compost in progress, return "In Progress", else return "None"
+    echo $hotCompost ? "In Progress" : "None";
 }
 // if there is error in query
 catch (Exception $e){
