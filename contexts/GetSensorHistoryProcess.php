@@ -5,21 +5,24 @@ header('Content-Type: application/json; charset=utf-8');
 // access database
 $mysqli = require_once "./database.php";
 
-// create a sql to get most recent reading of sensors
-$sql = "SELECT hotcompost.id,
-        sensor.moisturePercent,
+// get the id in the session
+session_start();
+
+$sql = "SELECT sensor.moisturePercent,
         sensor.temperatureCelsius,
         sensor.time
     FROM `hotcompost`,
         `sensor`
-    WHERE hotcompost.status NOT LIKE 'Completed'
-    ORDER BY sensor.time DESC
-    LIMIT 1";
+    WHERE hotcompost.id = sensor.hotcompost_id
+        AND hotcompost.id = ?;";
 
-// try to get and catch if there is error
+// try to create and catch if there is error
 try{
     // prepare the statement
     $stmt = $mysqli -> prepare ($sql);
+
+    // bind the parameters to the statement
+    $stmt -> bind_param ('i', $_GET['compostID']);
 
     // execute the statement
     $stmt -> execute();
@@ -27,25 +30,20 @@ try{
     // get the result from the statement
     $result = $stmt -> get_result();
 
-    // get one values from the database
-    $hotCompostReading = $result -> fetch_assoc();
+    // get only one from the executed statement
+    $compost = $result -> fetch_all( MYSQLI_ASSOC );
 
-    // response message is dependent if there is hot compost in progress
-    $response = $hotCompostReading ? [
-        'status' => "success",
-        'message' => "Read",
-        'sensor' => $hotCompostReading
-    ] : [
-        'status' => "success",
-        'message' => "Create"
-    ];
-
-    // free data and close statement
+    // free data, close the statement
     $result -> free();
     $stmt -> close();
 
+    // make a success response
+    $response = [
+        'status' => "success",
+        'messgae' => "Successfully got the sensor data of the compostID",
+        'compost' => $compost
+    ];
 }
-
 // if there is error in query
 catch (Exception $e){
     // make an error response
@@ -58,7 +56,7 @@ catch (Exception $e){
 // close the database
 $mysqli -> close();
 
-// return the response as json
+// return the response as json to the summary-ad.js
 exit ( json_encode($response) );
 
 ?>
