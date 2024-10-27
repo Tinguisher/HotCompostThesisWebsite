@@ -9,7 +9,30 @@
 
 <body>
     <h1>This is the history for each compost</h1>
-
+    <table>
+        <thead>
+            <tr>
+                <th>Compost ID</th>
+                <th>Status</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody data-compost-container>
+            <tr>
+                <td>Loading...</td>
+                <td>Loading...</td>
+                <td>Loading...</td>
+            </tr>
+        </tbody>
+        <!-- Template for each compost -->
+        <template data-compost-template>
+            <tr>
+                <td data-compostID></td>
+                <td data-status></td>
+                <td data-createdAt></td>
+            </tr>
+        </template>
+    </table>
 </body>
 <script src="../js/history_compost.js"> </script>
 

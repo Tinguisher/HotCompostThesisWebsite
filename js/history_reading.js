@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function () {
             // get the template for sensor and clone it
             const sensorTemplate = document.querySelector("[data-sensor-template]");
             const row = sensorTemplate.content.cloneNode(true).children[0];
-            console.log(reading);
 
             // get the template child that data can be inserted
             const moisturePercent = row.querySelector("[data-moisture-percent]");

@@ -1,5 +1,13 @@
 // Load js if HTML is done
 document.addEventListener('DOMContentLoaded', function () {
+    // check all compost history
+    const historyCompostButton = document.getElementById("historyCompostButton");
+
+    // go to history of hot compost if there is click
+    historyCompostButton.addEventListener('click', () => {
+        window.location.href = './history_compost.html';
+    })
+
     // get the status of current hot compost
     fetch('../contexts/GetLatestRecordProcess.php')
         // get response as json
