@@ -45,11 +45,18 @@ document.addEventListener('DOMContentLoaded', function () {
             const compostID = row.querySelector("[data-compostID]");
             const status = row.querySelector("[data-status]");
             const createdAt = row.querySelector("[data-createdAt]");
+            const summary = row.querySelector("[data-summary]");
 
             // place the data got from the fetch  
             compostID.textContent = compost.id;
             status.textContent = compost.status;
             createdAt.textContent = compost.createdAt;
+            summary.textContent = "View Summary";
+
+            // if there is click on view summary button
+            summary.addEventListener('click', () => {
+                window.location.href = `./history_reading.html?compostID=${compost.id}`
+            })
 
             // put each made row inside sensorContainer
             compostContainer.appendChild(row);
