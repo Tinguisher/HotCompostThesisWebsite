@@ -12,7 +12,8 @@ $sql = "SELECT hotcompost.id,
         sensor.time
     FROM `hotcompost`,
         `sensor`
-    WHERE hotcompost.status NOT LIKE 'Completed'
+    WHERE hotcompost.id = sensor.hotcompost_id
+        AND hotcompost.status NOT LIKE 'Completed'
     ORDER BY sensor.time DESC
     LIMIT 1";
 
