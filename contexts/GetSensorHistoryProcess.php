@@ -40,7 +40,7 @@ try{
     // make a success response
     $response = [
         'status' => "success",
-        'messgae' => "Successfully got the sensor data of the compostID",
+        'message' => "Successfully got the sensor data of the compostID",
         'compost' => $compost
     ];
 }
@@ -56,7 +56,7 @@ catch (Exception $e){
 // close the database
 $mysqli -> close();
 
-// return the response as json to the summary-ad.js
+// return the response as json to the history_reading.js
 exit ( json_encode($response) );
 
 ?>

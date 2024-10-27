@@ -9,7 +9,30 @@
 
 <body>
     <h1>This is the history sensor readings</h1>
-
+    <table>
+        <thead>
+            <tr>
+                <th>Moisture Percent</th>
+                <th>Temperature</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody data-sensor-container>
+            <tr>
+                <td>Loading...</td>
+                <td>Loading...</td>
+                <td>Loading...</td>
+            </tr>
+        </tbody>
+        <!-- Template for each sensor -->
+        <template data-sensor-template>
+            <tr>
+                <td data-moisture-percent></td>
+                <td data-temperature></td>
+                <td data-time></td>
+            </tr>
+        </template>
+    </table>
 </body>
 <script src="../js/history_reading.js"> </script>
 
