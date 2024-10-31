@@ -12,7 +12,8 @@ $sql = "SELECT hotcompost.id,
         sensor.time
     FROM `hotcompost`,
         `sensor`
-    WHERE hotcompost.status NOT LIKE 'Completed'
+    WHERE hotcompost.id = sensor.hotcompost_id
+        AND hotcompost.status NOT LIKE 'Completed'
     ORDER BY sensor.time DESC
     LIMIT 1";
 
@@ -44,6 +45,8 @@ try{
     $result -> free();
     $stmt -> close();
 
+    // refresh the request of web to esp32
+    include './RequestNoneProcess.php';
 }
 
 // if there is error in query
