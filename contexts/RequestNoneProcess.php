@@ -36,9 +36,6 @@ if (!$connection) {
 
     // close the statement
     $stmt->close();
-
-    // make a connection with key of request and value of "None"
-    $connection['request'] = "None";
 }
 
 // make a sql to update the request to None
@@ -53,7 +50,7 @@ $stmt = $mysqli->prepare($sql);
 // execute the statement
 $stmt->execute();
 
-// close statement and database free the result
+// close the statement
 $stmt->close();
 
 ?>

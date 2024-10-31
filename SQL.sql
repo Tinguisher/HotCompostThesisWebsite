@@ -24,13 +24,10 @@ CREATE TABLE sensor(
 CREATE TABLE connection(
 	id int AUTO_INCREMENT NOT NULL,
 	weight double NOT NULL,
+	request varchar (50) NOT NULL,
 	CONSTRAINT PK_connection
 	PRIMARY KEY (id)
 );
-
-
-
-
 
 
 

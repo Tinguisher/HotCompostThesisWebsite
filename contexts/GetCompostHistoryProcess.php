@@ -9,7 +9,8 @@ $mysqli = require_once "./database.php";
 session_start();
 
 $sql = "SELECT *
-    FROM hotcompost;";
+    FROM hotcompost
+    ORDER BY createdAt DESC;";
 
 // try to create and catch if there is error
 try{
@@ -28,6 +29,9 @@ try{
     // free data, close the statement
     $result -> free();
     $stmt -> close();
+
+    // refresh the request of web to esp32
+    include './RequestNoneProcess.php';
 
     // make a success response
     $response = [
