@@ -43,7 +43,9 @@ try{
     // free data and close statement
     $result -> free();
     $stmt -> close();
-
+    
+    // refresh the request of web to esp32
+    include './RequestNoneProcess.php';
 }
 
 // if there is error in query

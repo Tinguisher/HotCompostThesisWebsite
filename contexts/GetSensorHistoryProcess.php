@@ -14,7 +14,8 @@ $sql = "SELECT sensor.moisturePercent,
     FROM `hotcompost`,
         `sensor`
     WHERE hotcompost.id = sensor.hotcompost_id
-        AND hotcompost.id = ?;";
+        AND hotcompost.id = ?
+    ORDER BY sensor.time DESC;";
 
 // try to create and catch if there is error
 try{
@@ -36,6 +37,9 @@ try{
     // free data, close the statement
     $result -> free();
     $stmt -> close();
+
+    // refresh the request of web to esp32
+    include './RequestNoneProcess.php';
 
     // make a success response
     $response = [

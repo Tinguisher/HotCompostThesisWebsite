@@ -23,7 +23,7 @@ try{
     // make a string of sql to check latest hot compost made
     $sql_getHotCompost = "SELECT *
         FROM `hotcompost`
-        ORDER BY createdAt DESC
+        WHERE status NOT LIKE 'Completed'
         LIMIT 1;";
     
     // prepare the statement
@@ -38,8 +38,8 @@ try{
     // get only one from the executed statement
     $hotCompost = $result -> fetch_assoc();
 
-    // if the hot compost that is not "In Progress", exit
-    if ($hotCompost['status'] != "In Progress") exit();
+    // if there is no hot compost, exit
+    if (!$hotCompost) exit();
 
     // make a string of sql to insert sensor data
     $sql_insertSensorData = "INSERT INTO `sensor`

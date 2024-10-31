@@ -7,7 +7,7 @@ try{
     // make a string of sql to check latest hot compost made
     $sql = "SELECT *
         FROM `hotcompost`
-        ORDER BY createdAt DESC
+        WHERE status NOT LIKE 'Completed'
         LIMIT 1;";
 
     // prepare the statement
@@ -27,8 +27,8 @@ try{
     $result -> free();
     $mysqli -> close();
 
-    // exit the status of the most recent hot compost
-    exit( $hotCompost['status'] == "Completed" ? "None" : $hotCompost['status'] );
+    // exit the hotcompost status if there is in progress or none
+    exit( $hotCompost['status'] ?? "None" );
 }
 // if there is error in query
 catch (Exception $e){

@@ -21,6 +21,13 @@ CREATE TABLE sensor(
     PRIMARY KEY (id)
 );
 
+CREATE TABLE connection(
+	id int AUTO_INCREMENT NOT NULL,
+	weight double NOT NULL,
+	CONSTRAINT PK_connection
+	PRIMARY KEY (id)
+);
+
 
 
 
