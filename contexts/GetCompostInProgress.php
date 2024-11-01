@@ -5,16 +5,11 @@ header('Content-Type: application/json; charset=utf-8');
 // access database
 $mysqli = require_once "./database.php";
 
-// create a sql to get most recent reading of sensors that are in progress
-$sql = "SELECT hotcompost.id,
-        sensor.moisturePercent,
-        sensor.temperatureCelsius,
-        sensor.time
-    FROM `hotcompost`,
-        `sensor`
-    WHERE hotcompost.id = sensor.hotcompost_id
-        AND hotcompost.status IN ('In Progress', 'Mixing')
-    ORDER BY sensor.time DESC
+// create a sql to check there is no hotcompost in progress
+$sql = "SELECT *
+    FROM `hotcompost`
+    WHERE status IN ('In Progress', 'Mixing')
+    ORDER BY createdAt DESC
     LIMIT 1";
 
 // try to get and catch if there is error
@@ -29,24 +24,20 @@ try{
     $result = $stmt -> get_result();
 
     // get one values from the database
-    $hotCompostReading = $result -> fetch_assoc();
+    $hotCompostInProgress = $result -> fetch_assoc();
 
-    // response message is dependent if there is hot compost in progress
-    $response = $hotCompostReading ? [
-        'status' => "success",
-        'message' => "Read",
-        'sensor' => $hotCompostReading
-    ] : [
+    // if there is hot compost in progress, create, otherwise reply in progress
+    $response = $hotCompostInProgress ? [
         'status' => "success",
         'message' => "Create"
+    ] : [
+        'status' => "success",
+        'message' => "In Progress"
     ];
 
     // free data and close statement
     $result -> free();
     $stmt -> close();
-
-    // refresh the request of web to esp32
-    include './RequestNoneProcess.php';
 }
 
 // if there is error in query

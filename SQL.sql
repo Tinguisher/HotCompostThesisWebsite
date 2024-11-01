@@ -8,6 +8,18 @@ CREATE TABLE hotcompost(
 	PRIMARY KEY (id)
 );
 
+CREATE TABLE layer(
+    id int AUTO_INCREMENT NOT NULL,
+	hotcompost_id INT NOT NULL,
+	material varchar (50) NOT NULL,
+    weight double NOT NULL,
+    FOREIGN KEY (hotcompost_id) REFERENCES hotcompost(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    CONSTRAINT PK_layer
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE sensor(
     id int AUTO_INCREMENT NOT NULL,
 	hotcompost_id INT NOT NULL,
