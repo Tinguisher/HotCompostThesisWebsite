@@ -1,14 +1,14 @@
 // Load js if HTML is done
 document.addEventListener('DOMContentLoaded', function () {
-    // get if there is compost in progress
-    fetch('../contexts/GetCompostInProgress.php')
+    // get if there is a need to use weight sensor to create hotcompost
+    fetch('../contexts/GetWeightUseProcess.php')
         // get response as json
         .then(response => response.json())
         // get objects from fetch
         .then(data => {
             // if there is compost in progress, redirect to dashboard
-            if (data.message != "In Progress") return(window.location = './dashboard.html');
-
+            if (data.message == "In Progress") return(window.location = './dashboard.html');
+            
             // if there is no current in progress, create
             createCompost();
         })

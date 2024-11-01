@@ -29,40 +29,6 @@ try{
     $stmt->close();
     $result->free();
 
-    // if the request is empty, make a new one
-    if (!$connection) {
-        // make a string of sql to create a new connection for less error
-        $sql = "INSERT INTO `connection`
-                (`id`, `weight`, `request`)
-                VALUES (1, 0, 'Weight')";
-
-        // prepare the statement
-        $stmt = $mysqli->prepare($sql);
-
-        // execute the statement
-        $stmt->execute();
-
-        // close the statement
-        $stmt->close();
-
-        // the weight of the connection will be 0 at initial insert
-        $connection['weight'] = 0;
-    }
-
-    // make a sql to update the request to Weight
-    $sql = "UPDATE `connection`
-    SET `request` = 'Weight'
-    WHERE `id` = 1;";
-
-    // prepare the statement
-    $stmt = $mysqli->prepare($sql);
-
-    // execute the statement
-    $stmt->execute();
-
-    // close the statement
-    $stmt->close();
-
     // make a success response and send the weight from the server
     $response = [
         'status' => "success",
