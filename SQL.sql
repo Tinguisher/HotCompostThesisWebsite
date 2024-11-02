@@ -36,6 +36,9 @@ CREATE TABLE sensor(
 CREATE TABLE connection(
 	id int AUTO_INCREMENT NOT NULL,
 	weight double NOT NULL,
+	nitrogen double NOT NULL,
+	phosphorus double NOT NULL,
+	potassium double NOT NULL,
 	request varchar (50) NOT NULL,
 	CONSTRAINT PK_connection
 	PRIMARY KEY (id)
