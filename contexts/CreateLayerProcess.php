@@ -59,11 +59,15 @@ try{
     // get the material name that will be put by the user
     include './GetMaterialProcess.php';
 
+    // check if the hot compost can be finish up
+    include './GetLayerProcess.php';
+
     // make a success response and give the new material to be input by the user
     $response = [
         'status' => "success",
         'message' => "Create",
-        'material' => $layer['material']
+        'material' => $layer['material'],
+        'finish' => $layer['finish']
     ];
 }
 // if there is error in query

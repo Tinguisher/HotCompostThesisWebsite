@@ -100,12 +100,16 @@ function requestWeight () {
 
     // get the material name that will be put by the user
     include './GetMaterialProcess.php';
+
+    // check if the hot compost can be finish up
+    include './GetLayerProcess.php';
     
     // make a success response and proceed to create with the next layer to be input
     $response = [
         'status' => "success",
         'message' => "Create",
-        'material' => $layer['material']
+        'material' => $layer['material'],
+        'finish' => $layer['finish']
     ];
 
     // return the response

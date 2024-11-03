@@ -21,13 +21,13 @@ $mysqli = require_once "./database.php";
 // try to create and catch if there is error
 try{
     // make a string of sql to check latest hot compost made
-    $sql_getHotCompost = "SELECT *
+    $sql = "SELECT *
         FROM `hotcompost`
-        WHERE status NOT LIKE 'Completed'
+        WHERE status LIKE 'In Progress'
         LIMIT 1;";
     
     // prepare the statement
-    $stmt = $mysqli -> prepare ($sql_getHotCompost);
+    $stmt = $mysqli -> prepare ($sql);
 
     // execute the statement
     $stmt -> execute();
@@ -38,16 +38,16 @@ try{
     // get only one from the executed statement
     $hotCompost = $result -> fetch_assoc();
 
-    // if there is no hot compost, exit
-    if (!$hotCompost) exit();
+    // if there is no hot compost in progress, exit
+    if (!$hotCompost) exit("There seems to be no in progress or it is mixing");
 
     // make a string of sql to insert sensor data
-    $sql_insertSensorData = "INSERT INTO `sensor`
+    $sql = "INSERT INTO `sensor`
             (`hotcompost_id`, `moisturePercent`, `temperatureCelsius`)
         VALUES (?, ?, ?);";
 
     // prepare the statement
-    $stmt = $mysqli -> prepare ($sql_insertSensorData);
+    $stmt = $mysqli -> prepare ($sql);
 
     // bind the parameters to the statement
     $stmt -> bind_param ('idd', $hotCompost['id'], $moisturePercent, $temperatureCelsius);
