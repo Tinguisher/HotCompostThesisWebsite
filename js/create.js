@@ -1,5 +1,8 @@
 // Load js if HTML is done
 document.addEventListener('DOMContentLoaded', function () {
+    // get the material element as global variable
+    const material = document.getElementById("material");
+
     // get if there is a need to use weight sensor to create hotcompost
     fetch('../contexts/GetWeightUseProcess.php')
         // get response as json
@@ -9,6 +12,9 @@ document.addEventListener('DOMContentLoaded', function () {
             // if there is compost in progress, redirect to dashboard
             if (data.message == "In Progress") return(window.location = './dashboard.html');
             
+            // change the material name to be seen by the user
+            material.textContent = `Your material is: ${data.material}`;
+
             // if there is no current in progress, create
             createCompost();
         })
@@ -65,13 +71,10 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 // if the request data is error, go back to dashboard
                 if (data.status == "error") return(window.location = './dashboard.html');
-                    
-                // if the data status is success, output the weight values in weightValue
-                const weightValue = document.getElementById("weightValue");
-                weightValue.textContent = data.weight;
+                
+                // change to the next material name
+                material.textContent = `Your material is: ${data.material}`;
 
-                // loop back to get new weight
-                createCompost();
             })
             // error checker
             .catch(error => console.error(error));

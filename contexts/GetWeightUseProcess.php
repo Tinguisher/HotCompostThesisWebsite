@@ -86,7 +86,7 @@ function requestWeight () {
         // make a string of sql to create a new connection for less error
         $sql = "INSERT INTO `hotcompost`
                 (`status`)
-                VALUES ('Layering')";
+                VALUES ('Layering');";
 
         // prepare the statement
         $stmt = $mysqli->prepare($sql);
@@ -97,11 +97,15 @@ function requestWeight () {
         // close the statement
         $stmt->close();
     }
+
+    // get the material name that will be put by the user
+    include './GetMaterialProcess.php';
     
-    // make a success response and proceed to create
+    // make a success response and proceed to create with the next layer to be input
     $response = [
         'status' => "success",
-        'message' => "Create"
+        'message' => "Create",
+        'material' => $layer['material']
     ];
 
     // return the response
