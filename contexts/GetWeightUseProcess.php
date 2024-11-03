@@ -59,6 +59,45 @@ function requestWeight () {
     // close the statement
     $stmt->close();
 
+    // make a string of sql to check if there is compost already in layering process
+    $sql = "SELECT *
+        FROM `hotcompost`
+        WHERE status LIKE 'Layering'
+        LIMIT 1;";
+
+    // prepare the statement
+    $stmt = $mysqli -> prepare ($sql);
+
+    // execute the statement
+    $stmt -> execute();
+
+    // get the result from the statement
+    $result = $stmt -> get_result();
+
+    // get only one from the executed statement
+    $compostLayering = $result->fetch_assoc();
+
+    // close statement and free the result
+    $stmt->close();
+    $result->free();
+
+    // if there is no compost that is being layered, create new one
+    if (!$compostLayering) {
+        // make a string of sql to create a new connection for less error
+        $sql = "INSERT INTO `hotcompost`
+                (`status`)
+                VALUES ('Layering')";
+
+        // prepare the statement
+        $stmt = $mysqli->prepare($sql);
+
+        // execute the statement
+        $stmt->execute();
+
+        // close the statement
+        $stmt->close();
+    }
+    
     // make a success response and proceed to create
     $response = [
         'status' => "success",

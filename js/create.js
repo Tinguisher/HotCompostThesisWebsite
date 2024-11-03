@@ -49,31 +49,31 @@ document.addEventListener('DOMContentLoaded', function () {
         // create object for each data in addLayerForm
         const payload = Object.fromEntries(addLayer);
 
-        // // make a request to create layer
-        // fetch('../contexts/CreateLayerProcess.php', {
-        //     method: "POST",
-        //     headers: {
-        //         // state as a json type
-        //         'Content-Type': 'application/json; charset=utf-8'
-        //     },
-        //     // give the request as a JSON to the server
-        //     body: JSON.stringify(payload)
-        // })
-        //     // get response as json
-        //     .then(response => response.json())
-        //     // get objects from fetch
-        //     .then(data => {
-        //         // if the request data is error, go back to dashboard
-        //         if (data.status == "error") return(window.location = './dashboard.html');
+        // make a request to create layer
+        fetch('../contexts/CreateLayerProcess.php', {
+            method: "POST",
+            headers: {
+                // state as a json type
+                'Content-Type': 'application/json; charset=utf-8'
+            },
+            // give the request as a JSON to the server
+            body: JSON.stringify(payload)
+        })
+            // get response as json
+            .then(response => response.json())
+            // get objects from fetch
+            .then(data => {
+                // if the request data is error, go back to dashboard
+                if (data.status == "error") return(window.location = './dashboard.html');
                     
-        //         // if the data status is success, output the weight values in weightValue
-        //         const weightValue = document.getElementById("weightValue");
-        //         weightValue.textContent = data.weight;
+                // if the data status is success, output the weight values in weightValue
+                const weightValue = document.getElementById("weightValue");
+                weightValue.textContent = data.weight;
 
-        //         // loop back to get new weight
-        //         createCompost();
-        //     })
-        //     // error checker
-        //     .catch(error => console.error(error));
+                // loop back to get new weight
+                createCompost();
+            })
+            // error checker
+            .catch(error => console.error(error));
     });
 });
