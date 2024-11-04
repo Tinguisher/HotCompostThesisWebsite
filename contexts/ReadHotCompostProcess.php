@@ -4,10 +4,10 @@ $mysqli = require_once "./database.php";
 
 // try to create and catch if there is error
 try{
-    // make a string of sql to check latest hot compost made
+    // make a string of sql to get hot compost in progress
     $sql = "SELECT *
         FROM `hotcompost`
-        WHERE status NOT LIKE 'Completed'
+        WHERE status LIKE 'In Progress'
         LIMIT 1;";
 
     // prepare the statement

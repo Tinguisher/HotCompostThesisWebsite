@@ -1,4 +1,20 @@
 <?php
+// if the file is accessed manually and not post
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    // make an error response
+    exit("Error. Not a POST request");
+}
+
+// get post values
+$moisturePercent = $_POST['inputMoisturePercent'];
+$temperatureCelsius = $_POST['inputTemperatureCelsius'];
+
+// check if there is empty input of data
+if ( empty($moisturePercent) || empty($temperatureCelsius)) {
+    // make an error response
+    exit("Error. All sensor values are required");
+};
+
 // access database
 $mysqli = require_once "./database.php";
 
@@ -47,13 +63,30 @@ try{
     // get only one from the executed statement
     $sensorInterval = $result -> fetch_assoc();
 
+    // go back to esp32 since there is already read
+    if ($sensorInterval) exit("Reading Done");
+
+    // make a string of sql to insert sensor data
+    $sql = "INSERT INTO `sensor`
+            (`hotcompost_id`, `moisturePercent`, `temperatureCelsius`)
+        VALUES (?, ?, ?);";
+
+    // prepare the statement
+    $stmt = $mysqli -> prepare ($sql);
+
+    // bind the parameters to the statement
+    $stmt -> bind_param ('idd', $hotCompost['id'], $moisturePercent, $temperatureCelsius);
+
+    // execute the statement
+    $stmt -> execute();
+
     // close statement and database and free the result
     $stmt -> close();
     $result -> free();
     $mysqli -> close();
 
-    // if there is already read within an hour, return "read done", else return "request read"
-    exit ( $sensorInterval ? "read done" : "request read" );
+    // exit to inserted new reading
+    exit ("Inserted New Reading");
 }
 // if there is error in query
 catch (Exception $e){
