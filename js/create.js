@@ -80,7 +80,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 material.textContent = `Your material is: ${data.material}`;
 
                 // if the material can be finish, show button, if can't then delete
-                data.finish ? finishCompost() : finishButton.remove();
+                if (data.finish) finishCompost();
+                else if (finishButton && !data.finish) finishButton.remove();
             })
             // error checker
             .catch(error => console.error(error));
