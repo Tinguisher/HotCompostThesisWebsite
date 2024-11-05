@@ -9,7 +9,8 @@ $mysqli = require_once "./database.php";
 try{
     // make a string of sql to check latest hot compost made
     $sql = "UPDATE `hotcompost`
-        SET `status` = 'In Progress'
+        SET `status` = 'In Progress',
+            `createdAt` = now()
         WHERE status = 'Layering'
             AND id = (
                 SELECT id
