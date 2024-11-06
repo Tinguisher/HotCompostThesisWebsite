@@ -41,10 +41,14 @@ try{
     // close the statement
     $stmt->close();
 
+    // check if there is top most layer already
+    include './GetTopLayerProcess.php';
+
     // make a success response and give the new material to be input by the user
     $response = [
         'status' => "success",
-        'message' => "Requested for esp32 to water and mix"
+        'message' => "Requested for esp32 to water and mix",
+        'topLayer' => $compostTopLayer ? true : false           //if there is compost top layer, return true else false
     ];
 }
 // if there is error in query

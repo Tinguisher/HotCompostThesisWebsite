@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const addLayerForm = document.getElementById("addLayerForm");
     const alertMixDiv = document.getElementById("alertMixDiv");
     const mixButton = document.getElementById("mixButton");
+    const topBrownLayerDiv = document.getElementById("topBrownLayerDiv");
+    const lastBrownWeight = document.getElementById("lastBrownWeight");
     let finishButton = addLayerForm.querySelector('button');
 
     // function to be repeated in initial and after water and mix
@@ -20,6 +22,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // if there are brown and material consecutively, mix first before proceeding to next
                 if (data.mix) return (mixRequest());
+
+                // if the server requests for top most layer, add last layer to finish
+                if (data.topLayer) return (lastLayerFinish());
 
                 // change the material name to be seen by the user
                 material.textContent = `Your material is: ${data.material}`;
@@ -49,9 +54,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 // if the request data is error, go back to dashboard
                 if (data.status == "error") return (window.location = './dashboard.html');
 
-                // if the data status is success, output the weight values in weightValue
+                // if the data status is success, output the weight values in weightValue and lastbrown weight
                 const weightValue = document.getElementById("weightValue");
                 weightValue.value = data.weight;
+                lastBrownWeight.value = data.weight;
 
                 // loop back to get new weight
                 createCompost();
@@ -64,6 +70,16 @@ document.addEventListener('DOMContentLoaded', function () {
     mixRequest = () => {
         alertMixDiv.hidden = false;
         addLayerForm.hidden = true;
+    }
+
+    // show only the div for top layer
+    lastLayerFinish = () => {
+        alertMixDiv.hidden = true;
+        addLayerForm.hidden = true;
+        topBrownLayerDiv.hidden = false;
+
+        // request for weight
+        createCompost();
     }
 
     // if there is click on the button done, proceed to creating the layer
@@ -92,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // get objects from fetch
             .then(data => {
                 // if the request data is error, go back to dashboard
-                if (data.status == "error") return (window.location = './dashboard.html');
+                if (data.status == "error") return (console.error(data.message));
 
                 // if there are brown and material consecutively, mix first before proceeding to next
                 if (data.mix) return (mixRequest());
@@ -116,9 +132,9 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             // get objects from fetch
             .then(data => {
-                // if the request data is error, go back to dashboard
-                if (data.status == "error") return (window.location = './dashboard.html');
-                
+                // if the setting up of hot compost is error, output it in console
+                if (data.status == "error") console.error(data.message);;
+
                 // change the form to show to the user
                 alertMixDiv.hidden = true;
                 addLayerForm.hidden = false;
@@ -134,26 +150,71 @@ document.addEventListener('DOMContentLoaded', function () {
     finishCompost = () => {
         // create a button to finish and put it inside the form
         finishButton = document.createElement('button');
-        finishButton.textContent = "Finish up compost";
+        finishButton.textContent = "Finish up compost by adding this green material and top most brown material";
         finishButton.type = "button";
         addLayerForm.appendChild(finishButton);
-
+        
         // if there is click on the finish button
         finishButton.addEventListener('click', () => {
+
+            // get the data from the form
+            const addLayer = new FormData(addLayerForm);
+
+            // create object for each data in addLayerForm
+            const payload = Object.fromEntries(addLayer);
+
             // make a request to make the hot compost as in progress
-            fetch('../contexts/UpdateInProgressProcess.php')
+            fetch('../contexts/CreateTopLayerProcess.php', {
+                method: "POST",
+                headers: {
+                    // state as a json type
+                    'Content-Type': 'application/json; charset=utf-8'
+                },
+                // give the request as a JSON to the server
+                body: JSON.stringify(payload)
+            })
                 // get response as json
                 .then(response => response.json())
                 // get objects from fetch
                 .then(data => {
-                    // if the setting up of hot compost is success, go back to dashboard
-                    if (data.status == "success") window.location = './dashboard.html';
+                    // if the setting up of hot compost is error, output it in console
+                    if (data.status == "error") console.error(data.message);;
 
-                    // if there is error in the server, output the message in console
-                    console.error(data.message);
+                    // mix first before putting top layer
+                    mixRequest();
                 })
                 // error checker
                 .catch(error => console.error(error));
         })
     }
+
+    // if there is click in the top brown layer button
+    const topBrownLayerButton = document.getElementById("topBrownLayerButton");
+    topBrownLayerButton.addEventListener('click', () => {
+        // put the weight value into payload
+        const payload = {input_topBrown: lastBrownWeight.value};
+
+        // update database to give weight and ask for misting to database for top layer
+        fetch('../contexts/UpdateTopLayerProcess.php', {
+            method: "POST",
+            headers: {
+                // state as a json type
+                'Content-Type': 'application/json; charset=utf-8'
+            },
+            // give the request as a JSON to the server
+            body: JSON.stringify(payload)
+        })
+            // get response as json
+            .then(response => response.json())
+            // get objects from fetch
+            .then(data => {
+                // if the setting up of hot compost is error, output it in console
+                if (data.status == "error") return (console.error(data.message));
+
+                // go to dashboard if done
+                window.location = './dashboard.html'
+            })
+            // error checker
+            .catch(error => console.error(error));
+    })
 });

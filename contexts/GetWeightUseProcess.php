@@ -104,13 +104,17 @@ function requestWeight () {
     // check if the bottom layer is already mixed
     include './GetLayerProcess.php';
 
+    // check if there is top most layer already
+    include './GetTopLayerProcess.php';
+
     // make a success response and proceed to create with the next layer to be input
     $response = [
         'status' => "success",
         'message' => "Create",
         'material' => $layer['material'],
         'mix' => $layer['mix'],
-        'finish' => $layer['finish']
+        'finish' => $layer['finish'],
+        'topLayer' => $compostTopLayer ? true : false
     ];
 
     // return the response
