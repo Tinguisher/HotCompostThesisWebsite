@@ -1,6 +1,6 @@
 <?php
-// make a string of sql to check if hot compost can be finish up
-$sql = "SELECT COUNT(layer.hotcompost_id) AS count
+// make a string of sql to check if hot compost can be mix
+$sql = "SELECT COUNT(layer.part) AS count
         FROM `hotcompost`,
             `layer`
         WHERE hotcompost.id = (
@@ -9,6 +9,7 @@ $sql = "SELECT COUNT(layer.hotcompost_id) AS count
                     WHERE status LIKE 'Layering'
                     LIMIT 1
             )
+            AND part LIKE 'Bottom'
             AND hotcompost.id = layer.hotcompost_id;";
 
 // prepare the statement
@@ -21,12 +22,12 @@ $stmt->execute();
 $result = $stmt -> get_result();
 
 // get only one from the executed statement
-$layerCount = $result->fetch_assoc();
+$layerMixed = $result->fetch_assoc();
 
 // close statement and free the result
 $stmt->close();
 $result->free();
 
-// if the top layer is brown and more than 1 layer then it can be finish
-$layer['finish'] = ($layerCount['count'] % 2 == 1 && $layerCount['count'] > 1) ? true : false;
+// if the green and brown material is not watered and mixed, request for the mix before proceeding
+$layer['mix'] = $layerMixed['count'] >= 2 ? true : false;
 ?>

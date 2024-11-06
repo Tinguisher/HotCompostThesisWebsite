@@ -35,4 +35,6 @@ if (!$layer) $layer['material'] = "Green";
 // if the previous layer is Brown, let the user know that Green Material will be next
 $layer['material'] = $layer['material'] == "Brown" ? "Green" : "Brown";
 
+// check if the hot compost can be finish up next layer
+$layer['finish'] = $layer['material'] == "Green" ? true : false;
 ?>

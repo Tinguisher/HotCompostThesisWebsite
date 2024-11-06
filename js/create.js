@@ -3,28 +3,40 @@ document.addEventListener('DOMContentLoaded', function () {
     // get global variables to be manipulated
     const material = document.getElementById("material");
     const addLayerForm = document.getElementById("addLayerForm");
+    const alertMixDiv = document.getElementById("alertMixDiv");
+    const mixButton = document.getElementById("mixButton");
     let finishButton = addLayerForm.querySelector('button');
 
-    // get if there is a need to use weight sensor to create hotcompost
-    fetch('../contexts/GetWeightUseProcess.php')
-        // get response as json
-        .then(response => response.json())
-        // get objects from fetch
-        .then(data => {
-            // if there is compost in progress, redirect to dashboard
-            if (data.message == "In Progress") return (window.location = './dashboard.html');
+    // function to be repeated in initial and after water and mix
+    checkLayering = () => {
+        // get if there is a need to use weight sensor to create hotcompost
+        fetch('../contexts/GetWeightUseProcess.php')
+            // get response as json
+            .then(response => response.json())
+            // get objects from fetch
+            .then(data => {
+                // if there is compost in progress, redirect to dashboard
+                if (data.message == "In Progress") return (window.location = './dashboard.html');
 
-            // change the material name to be seen by the user
-            material.textContent = `Your material is: ${data.material}`;
+                // if there are brown and material consecutively, mix first before proceeding to next
+                if (data.mix) return (mixRequest());
 
-            // if compost can be finish go to process of adding a button
-            if (data.finish) finishCompost();
+                // change the material name to be seen by the user
+                material.textContent = `Your material is: ${data.material}`;
 
-            // if there is no current in progress, create
-            createCompost();
-        })
-        // error checker
-        .catch(error => console.error(error));
+                // if compost can be finish go to process of adding a button
+                if (data.finish) finishCompost();
+                if (finishButton && !data.finish) finishButton.remove();
+
+                // if there is no current in progress, create
+                createCompost();
+            })
+            // error checker
+            .catch(error => console.error(error));
+    }
+
+    // go to initial function
+    checkLayering();
 
     // this is the process of making the hot compost pile
     createCompost = () => {
@@ -46,6 +58,12 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             // error checker
             .catch(error => console.error(error));
+    }
+
+    // change the hidden element to show
+    mixRequest = () => {
+        alertMixDiv.hidden = false;
+        addLayerForm.hidden = true;
     }
 
     // if there is click on the button done, proceed to creating the layer
@@ -76,16 +94,41 @@ document.addEventListener('DOMContentLoaded', function () {
                 // if the request data is error, go back to dashboard
                 if (data.status == "error") return (window.location = './dashboard.html');
 
+                // if there are brown and material consecutively, mix first before proceeding to next
+                if (data.mix) return (mixRequest());
+
                 // change to the next material name
                 material.textContent = `Your material is: ${data.material}`;
 
                 // if the material can be finish, show button, if can't then delete
                 if (data.finish) finishCompost();
-                else if (finishButton && !data.finish) finishButton.remove();
+                if (finishButton && !data.finish) finishButton.remove();
             })
             // error checker
             .catch(error => console.error(error));
     });
+
+    // if there is click to mix the button
+    mixButton.addEventListener('click', () => {
+        // make a request to mix layer
+        fetch('../contexts/RequestLayerWaterMixProcess.php')
+            // get response as json
+            .then(response => response.json())
+            // get objects from fetch
+            .then(data => {
+                // if the request data is error, go back to dashboard
+                if (data.status == "error") return (window.location = './dashboard.html');
+                
+                // change the form to show to the user
+                alertMixDiv.hidden = true;
+                addLayerForm.hidden = false;
+
+                // go back to check layering
+                checkLayering();
+            })
+            // error checker
+            .catch(error => console.error(error));
+    })
 
     // process of adding a finish button
     finishCompost = () => {

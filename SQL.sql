@@ -14,6 +14,7 @@ CREATE TABLE layer(
 	hotcompost_id INT NOT NULL,
 	material varchar (50) NOT NULL,
     weight double NOT NULL,
+	part varchar (50) NOT NULL,
     FOREIGN KEY (hotcompost_id) REFERENCES hotcompost(id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,

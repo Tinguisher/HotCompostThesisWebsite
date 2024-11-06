@@ -36,13 +36,13 @@ try{
 
     // make a string of sql to create a new connection for less error
     $sql = "INSERT INTO `layer`
-    (`hotcompost_id`, `material`, `weight`)
+    (`hotcompost_id`, `material`, `weight`, `part`)
     VALUES ((
         SELECT id
             FROM `hotcompost`
             WHERE status LIKE 'Layering'
             LIMIT 1
-        ), ?, ?);";
+        ), ?, ?, 'Bottom');";
 
     // prepare the statement
     $stmt = $mysqli->prepare($sql);
@@ -56,10 +56,10 @@ try{
     // close the statement
     $stmt->close();
 
-    // get the material name that will be put by the user
+    // get the material name that will be put by the user and check if it can be finish up
     include './GetMaterialProcess.php';
 
-    // check if the hot compost can be finish up
+    // check if the bottom layer is already mixed
     include './GetLayerProcess.php';
 
     // make a success response and give the new material to be input by the user
@@ -67,6 +67,7 @@ try{
         'status' => "success",
         'message' => "Create",
         'material' => $layer['material'],
+        'mix' => $layer['mix'],
         'finish' => $layer['finish']
     ];
 }
