@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // get global variables to be manipulated
     const material = document.getElementById("material");
     const addLayerForm = document.getElementById("addLayerForm");
+    const submitFormButton = document.getElementById("submitFormButton");
     const alertMixDiv = document.getElementById("alertMixDiv");
     const mixButton = document.getElementById("mixButton");
     const topBrownLayerDiv = document.getElementById("topBrownLayerDiv");
@@ -56,8 +57,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // if the data status is success, output the weight values in weightValue and lastbrown weight
                 const weightValue = document.getElementById("weightValue");
-                weightValue.value = data.weight;
-                lastBrownWeight.value = data.weight;
+                weightValue.value = (data.weight <= 0) ? "0" : data.weight;
+                lastBrownWeight.value = (data.weight <= 0) ? "0" : data.weight;
+
+                // check if the submit buttons must be clickable or not depending on weight value
+                submitFormButton.disabled = (data.weight <= 0) ? true : false;
+                topBrownLayerButton.disabled = (data.weight <= 0) ? true : false;
+                if (finishButton) finishButton.disabled = (data.weight <= 0) ? true : false;
 
                 // loop back to get new weight
                 createCompost();

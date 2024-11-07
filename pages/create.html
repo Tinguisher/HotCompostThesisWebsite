@@ -11,8 +11,8 @@
     <h1>This is the page when setting up the compost</h1>
     <form id="addLayerForm">
         <p id="material">Loading...</p>
-        <input type="text" id="weightValue" name="input_weightValue" value="Loading..." />
-        <input type="submit">
+        <input type="text" id="weightValue" name="input_weightValue" value="Loading..." required/>
+        <input id="submitFormButton" type="submit">
     </form>
 
     <div id="alertMixDiv" hidden>
@@ -22,7 +22,7 @@
     
     <div id="topBrownLayerDiv" hidden>
         <p>This is the last input of the user of brown material to finish</p>
-        <input type="text" id="lastBrownWeight" name="input_topBrown" value="Loading..." />
+        <input type="text" id="lastBrownWeight" name="input_topBrown" value="Loading..." required/>
         <button id="topBrownLayerButton">Put the last brown material</button>
     </div>
 </body>
