@@ -7,7 +7,7 @@ try{
     // make a string of sql to get hot compost in progress
     $sql = "SELECT *
         FROM `hotcompost`
-        WHERE status IN ('In Progress', 'Mixing')
+        WHERE status IN ('In Progress', 'Mixing', 'Layering')
         LIMIT 1;";
 
     // prepare the statement
@@ -87,5 +87,4 @@ catch (Exception $e){
     // make an error response
     exit ( "Error No: ". $e->getCode() ." - ". $e->getMessage() );
 }
-
 ?>

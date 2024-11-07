@@ -56,40 +56,6 @@ try{
     // close the statement
     $stmt->close();
 
-    // // make a string of sql to update part to MixRequest
-    // $sql = "UPDATE `layer`
-    // SET `part` = 'MixRequest'
-    // WHERE `part` = 'Bottom'
-    //     AND hotcompost_id = (
-    //         SELECT id
-    //             FROM `hotcompost`
-    //             WHERE status LIKE 'Layering'
-    //             LIMIT 1
-    //         );";
-
-    // // prepare the statement
-    // $stmt = $mysqli->prepare($sql);
-
-    // // execute the statement
-    // $stmt->execute();
-
-    // // close the statement
-    // $stmt->close();
-
-    // // make a string of sql to update part to MixRequest
-    // $sql = "UPDATE `hotcompost`
-    //     SET `lastMixed` = now()
-    //     WHERE status = 'Layering';";
-
-    // // prepare the statement
-    // $stmt = $mysqli->prepare($sql);
-
-    // // execute the statement
-    // $stmt->execute();
-
-    // // close the statement
-    // $stmt->close();
-
     // make a string of sql to create top part layer
     $sql = "INSERT INTO `layer`
         (`hotcompost_id`, `material`, `weight`, `part`)
