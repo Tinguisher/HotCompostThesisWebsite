@@ -21,7 +21,7 @@ $result = $stmt -> get_result();
 // get only one from the executed statement
 $hotCompostMixingStop = $result -> fetch_assoc();
 
-// if the hot compost must continue, exit mixing
+// if the hot compost is mixing less than 10mins, exit mixing
 if (!$hotCompostMixingStop) exit("Mixing");
 
 // if the hot compost mixed enough, update to In Progress
