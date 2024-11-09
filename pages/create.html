@@ -10,9 +10,13 @@
 <body>
     <h1>This is the page when setting up the compost</h1>
     <form id="addLayerForm">
+        <p>Your Target Brown and Green Material Ratio is <b>3 Brown : 1 Green</b></p>
+        <b id="currentRatio">Your current ratio is: </b>
+        <p id="ratioAfterAdding">Your current ratio after adding is</p>
         <p id="material">Loading...</p>
         <input type="text" id="weightValue" name="input_weightValue" value="Loading..." required/>
         <input id="submitFormButton" type="submit">
+        <input type="button" id="finishButton" value="Finish up compost by adding this green material and top most brown material" hidden>
     </form>
 
     <div id="alertMixDiv" hidden>

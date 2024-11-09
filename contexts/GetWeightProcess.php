@@ -12,6 +12,7 @@ try{
         FROM `connection`
         WHERE id = 1
         LIMIT 1;";
+
     // prepare the statement
     $stmt = $mysqli -> prepare ($sql);
 
@@ -27,35 +28,6 @@ try{
     // close statement and free the result
     $stmt->close();
     $result->free();
-
-    $sql = "SELECT DISTINCT(material), SUM(layer.weight) AS weight
-        FROM `hotcompost`,
-            `layer`
-        WHERE hotcompost.id = layer.hotcompost_id
-            AND hotcompost.status LIKE 'Layering'
-        GROUP BY material;";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     // make a success response and send the weight from the server
     $response = [

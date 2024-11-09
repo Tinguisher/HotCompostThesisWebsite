@@ -4,11 +4,19 @@ document.addEventListener('DOMContentLoaded', function () {
     const material = document.getElementById("material");
     const addLayerForm = document.getElementById("addLayerForm");
     const submitFormButton = document.getElementById("submitFormButton");
+    const finishButton = document.getElementById("finishButton");
+    const currentRatio = document.getElementById("currentRatio");
+    const ratioAfterAdding = document.getElementById("ratioAfterAdding");
     const alertMixDiv = document.getElementById("alertMixDiv");
     const mixButton = document.getElementById("mixButton");
     const topBrownLayerDiv = document.getElementById("topBrownLayerDiv");
     const lastBrownWeight = document.getElementById("lastBrownWeight");
-    let finishButton = addLayerForm.querySelector('button');
+
+    // variables for green and brown current weight before adding
+    var currentBrownWeight;
+    var currentGreenWeight;
+    var currentMaterial;
+
 
     // function to be repeated in initial and after water and mix
     checkLayering = () => {
@@ -27,12 +35,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 // if the server requests for top most layer, add last layer to finish
                 if (data.topLayer) return (lastLayerFinish());
 
+                // output the current ratio
+                currentRatio.textContent = `Your current ratio is: ${(data.greenWeight > 0) ? (data.brownWeight / data.greenWeight) : data.brownWeight} : ${data.greenWeight > 0 ? 1 : 0}`;
+
                 // change the material name to be seen by the user
                 material.textContent = `Your material is: ${data.material}`;
 
-                // if compost can be finish go to process of adding a button
-                if (data.finish) finishCompost();
-                if (finishButton && !data.finish) finishButton.remove();
+                // get the materials for global variables to be used in updating every read
+                currentBrownWeight = data.brownWeight;
+                currentGreenWeight = data.greenWeight;
+                currentMaterial = data.material;
+
+                // if compost can be finish unhide the button
+                finishButton.hidden = data.finish ? false : true;
 
                 // if there is no current in progress, create
                 createCompost();
@@ -59,6 +74,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 const weightValue = document.getElementById("weightValue");
                 weightValue.value = (data.weight <= 0) ? "0" : data.weight;
                 lastBrownWeight.value = (data.weight <= 0) ? "0" : data.weight;
+
+                // get the ratio
+                let textRatio = "";
+                // if brown, calculate by adding the weight to brown
+                if (currentMaterial == "Brown") textRatio = `${(data.weight + currentBrownWeight) / (
+                        (currentGreenWeight == 0) ?
+                            1 : currentGreenWeight
+                    )} : ${currentGreenWeight == 0 ?
+                        currentGreenWeight : 1}`;
+
+                // if green, calculate by dividing the weight to brown
+                else if (currentMaterial == "Green") textRatio = `${currentBrownWeight / (data.weight + currentGreenWeight)} : 1`;
+
+                // prompt the ratio to the web
+                ratioAfterAdding.textContent = `Your current ratio after adding is: ${textRatio}`;
 
                 // check if the submit buttons must be clickable or not depending on weight value
                 submitFormButton.disabled = (data.weight <= 0) ? true : false;
@@ -116,15 +146,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 // if the request data is error, go back to dashboard
                 if (data.status == "error") return (console.error(data.message));
 
-                // if there are brown and material consecutively, mix first before proceeding to next
-                if (data.mix) return (mixRequest());
-
-                // change to the next material name
-                material.textContent = `Your material is: ${data.material}`;
-
-                // if the material can be finish, show button, if can't then delete
-                if (data.finish) finishCompost();
-                if (finishButton && !data.finish) finishButton.remove();
+                // go back to void of initial load to check new ratio etc
+                checkLayering();
             })
             // error checker
             .catch(error => console.error(error));
@@ -152,53 +175,44 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error(error));
     })
 
-    // process of adding a finish button
-    finishCompost = () => {
-        // create a button to finish and put it inside the form
-        finishButton = document.createElement('button');
-        finishButton.textContent = "Finish up compost by adding this green material and top most brown material";
-        finishButton.type = "button";
-        addLayerForm.appendChild(finishButton);
-        
-        // if there is click on the finish button
-        finishButton.addEventListener('click', () => {
+    // if there is click on the finish button
+    finishButton.addEventListener('click', () => {
 
-            // get the data from the form
-            const addLayer = new FormData(addLayerForm);
+        // get the data from the form
+        const addLayer = new FormData(addLayerForm);
 
-            // create object for each data in addLayerForm
-            const payload = Object.fromEntries(addLayer);
+        // create object for each data in addLayerForm
+        const payload = Object.fromEntries(addLayer);
 
-            // make a request to make the hot compost as in progress
-            fetch('../contexts/CreateTopLayerProcess.php', {
-                method: "POST",
-                headers: {
-                    // state as a json type
-                    'Content-Type': 'application/json; charset=utf-8'
-                },
-                // give the request as a JSON to the server
-                body: JSON.stringify(payload)
-            })
-                // get response as json
-                .then(response => response.json())
-                // get objects from fetch
-                .then(data => {
-                    // if the setting up of hot compost is error, output it in console
-                    if (data.status == "error") console.error(data.message);;
-
-                    // mix first before putting top layer
-                    mixRequest();
-                })
-                // error checker
-                .catch(error => console.error(error));
+        // make a request to make the hot compost as in progress
+        fetch('../contexts/CreateTopLayerProcess.php', {
+            method: "POST",
+            headers: {
+                // state as a json type
+                'Content-Type': 'application/json; charset=utf-8'
+            },
+            // give the request as a JSON to the server
+            body: JSON.stringify(payload)
         })
-    }
+            // get response as json
+            .then(response => response.json())
+            // get objects from fetch
+            .then(data => {
+                // if the setting up of hot compost is error, output it in console
+                if (data.status == "error") console.error(data.message);;
+
+                // mix first before putting top layer
+                mixRequest();
+            })
+            // error checker
+            .catch(error => console.error(error));
+    })
 
     // if there is click in the top brown layer button
     const topBrownLayerButton = document.getElementById("topBrownLayerButton");
     topBrownLayerButton.addEventListener('click', () => {
         // put the weight value into payload
-        const payload = {input_topBrown: lastBrownWeight.value};
+        const payload = { input_topBrown: lastBrownWeight.value };
 
         // update database to give weight and ask for misting to database for top layer
         fetch('../contexts/UpdateTopLayerProcess.php', {

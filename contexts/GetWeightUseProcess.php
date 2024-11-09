@@ -107,6 +107,9 @@ function requestWeight () {
     // check if there is top most layer already
     include './GetTopLayerProcess.php';
 
+    // get the weight of brown and green that is in layering
+    include './GetWeightRatioLayeringProcess.php';
+
     // make a success response and proceed to create with the next layer to be input
     $response = [
         'status' => "success",
@@ -114,7 +117,9 @@ function requestWeight () {
         'material' => $layer['material'],
         'mix' => $layer['mix'],
         'finish' => $layer['finish'],
-        'topLayer' => $compostTopLayer ? true : false
+        'topLayer' => $compostTopLayer ? true : false,
+        'brownWeight' => $compostWeight[0]['weight'] ?? 0,
+        'greenWeight' => $compostWeight[1]['weight'] ?? 0
     ];
 
     // return the response
