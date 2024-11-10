@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const currentRatio = document.getElementById("currentRatio");
     const ratioAfterAdding = document.getElementById("ratioAfterAdding");
     const alertMixDiv = document.getElementById("alertMixDiv");
+    const waitDiv = document.getElementById("waitDiv");
     const mixButton = document.getElementById("mixButton");
     const topBrownLayerDiv = document.getElementById("topBrownLayerDiv");
     const lastBrownWeight = document.getElementById("lastBrownWeight");
@@ -28,11 +29,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 // if there is compost in progress, redirect to dashboard
                 if (data.message == "In Progress") return (window.location = './dashboard.html');
 
+                // if esp32 needs to process, wait for esp32
+                if (data.ESP32Process) return (waitESP32());
+
                 // if there are brown and material consecutively, mix first before proceeding to next
                 if (data.mix) return (mixRequest());
-
-                // if the server requests for top most layer, add last layer to finish
-                if (data.topLayer) return (lastLayerFinish());
 
                 // get the ratio
                 let brownRatio = (data.greenWeight > 0) ? Number(data.brownWeight / data.greenWeight).toLocaleString() : data.brownWeight;
@@ -42,13 +43,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 // output the current ratio
                 currentRatio.textContent = `Your current ratio is: ${brownRatio} : ${greenRatio}`;
 
-                // change the material name to be seen by the user
-                material.textContent = `Your material is: ${data.material}`;
-
                 // get the materials for global variables to be used in updating every read
                 currentBrownWeight = data.brownWeight;
                 currentGreenWeight = data.greenWeight;
                 currentMaterial = data.material;
+
+                // if the server requests for top most layer, add last layer to finish
+                if (data.topLayer) return (lastLayerFinish());
+
+                // show text for adding divs
+                waitDiv.hidden = true;
+                addLayerForm.hidden = false;
+                currentRatio.hidden = false;
+                ratioAfterAdding.hidden = false;
+
+                // change the material name to be seen by the user
+                material.textContent = `Your material is: ${currentMaterial}`;
 
                 // if compost can be finish unhide the button
                 finishButton.hidden = data.finish ? false : true;
@@ -68,6 +78,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // go to initial function
     checkLayering();
+
+    // this is process of waiting for esp32
+    waitESP32 = () => {
+        waitDiv.hidden = false;
+        alertMixDiv.hidden = true;
+        addLayerForm.hidden = true;
+        currentRatio.hidden = true;
+        ratioAfterAdding.hidden = true;
+
+        // go to initial function
+        checkLayering();
+    }
 
     // this is the process of making the hot compost pile
     createCompost = () => {
@@ -115,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     let finalBrownWeight = Number((3 * (data.weight + currentGreenWeight)) - currentBrownWeight).toLocaleString();
 
                     // check ratios and weight if finish button should be done or not
-                    finishButton.disabled = ( data.weight <= 0 || brownRatio >= 3 || finalBrownWeight > 100 ) ? true : false;
+                    finishButton.disabled = (data.weight <= 0 || brownRatio >= 3 || finalBrownWeight < 100) ? true : false;
                     finishButton.textContent = `Finish up compost by adding this ${data.weight} green material and ${finalBrownWeight} top most brown material`
                 };
 
@@ -136,13 +158,18 @@ document.addEventListener('DOMContentLoaded', function () {
     mixRequest = () => {
         alertMixDiv.hidden = false;
         addLayerForm.hidden = true;
+        currentRatio.hidden = true;
+        ratioAfterAdding.hidden = true;
     }
 
     // show only the div for top layer
     lastLayerFinish = () => {
         alertMixDiv.hidden = true;
+        waitDiv.hidden = true;
         addLayerForm.hidden = true;
         topBrownLayerDiv.hidden = false;
+        currentRatio.hidden = false;
+        ratioAfterAdding.hidden = false;
 
         // request for weight
         createCompost();
@@ -197,6 +224,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 // change the form to show to the user
                 alertMixDiv.hidden = true;
                 addLayerForm.hidden = false;
+                currentRatio.hidden = false;
+                ratioAfterAdding.hidden = false;
 
                 // go back to check layering
                 checkLayering();

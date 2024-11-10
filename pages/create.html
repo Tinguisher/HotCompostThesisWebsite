@@ -9,12 +9,12 @@
 
 <body>
     <h1>This is the page when setting up the compost</h1>
+    <b id="currentRatio">Your current ratio is: </b>
+    <p id="ratioAfterAdding">Your current ratio after adding is</p>
     <form id="addLayerForm">
         <p>Your Target Brown and Green Material Ratio is <b>3 Brown : 1 Green</b></p>
-        <b id="currentRatio">Your current ratio is: </b>
-        <p id="ratioAfterAdding">Your current ratio after adding is</p>
         <p id="material">Loading...</p>
-        <input type="text" id="weightValue" name="input_weightValue" value="Loading..." required/>
+        <input type="text" id="weightValue" name="input_weightValue" value="Loading..." required />
         <input id="submitFormButton" type="submit">
         <button type="button" id="finishButton" hidden>Finish up compost by adding ?</button>
     </form>
@@ -23,11 +23,15 @@
         <p>Please proceed to adding water and mixing before proceeding</p>
         <button id="mixButton">Add Water and Mix</button>
     </div>
-    
+
     <div id="topBrownLayerDiv" hidden>
         <p>This is the last input of the user of brown material to finish</p>
-        <input type="text" id="lastBrownWeight" name="input_topBrown" value="Loading..." required/>
+        <input type="text" id="lastBrownWeight" name="input_topBrown" value="Loading..." required />
         <button id="topBrownLayerButton">Put the last brown material</button>
+    </div>
+
+    <div id="waitDiv" hidden>
+        <p>Waiting for mixing or misting</p>
     </div>
 </body>
 <script src="../js/create.js"> </script>

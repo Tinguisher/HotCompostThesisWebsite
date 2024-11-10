@@ -115,6 +115,7 @@ function requestWeight () {
         'status' => "success",
         'message' => "Create",
         'material' => $layer['material'],
+        'ESP32Process' => $layer['ESP32Process'],
         'mix' => $layer['mix'],
         'finish' => $layer['finish'],
         'topLayer' => $compostTopLayer ? true : false,
