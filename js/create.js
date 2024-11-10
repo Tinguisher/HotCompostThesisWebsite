@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var currentGreenWeight;
     var currentMaterial;
 
-
     // function to be repeated in initial and after water and mix
     checkLayering = () => {
         // get if there is a need to use weight sensor to create hotcompost
@@ -35,8 +34,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 // if the server requests for top most layer, add last layer to finish
                 if (data.topLayer) return (lastLayerFinish());
 
+                // get the ratio
+                let brownRatio = (data.greenWeight > 0) ? Number(data.brownWeight / data.greenWeight).toLocaleString() : data.brownWeight;
+                // get the next green ratio
+                let greenRatio = Number(data.greenWeight > 0 ? 1 : 0);
+
                 // output the current ratio
-                currentRatio.textContent = `Your current ratio is: ${(data.greenWeight > 0) ? (data.brownWeight / data.greenWeight) : data.brownWeight} : ${data.greenWeight > 0 ? 1 : 0}`;
+                currentRatio.textContent = `Your current ratio is: ${brownRatio} : ${greenRatio}`;
 
                 // change the material name to be seen by the user
                 material.textContent = `Your material is: ${data.material}`;
@@ -53,7 +57,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 createCompost();
             })
             // error checker
-            .catch(error => console.error(error));
+            .catch(error => {
+                console.error(error);
+                // loop back to check layering if there is error
+                setTimeout(function () {
+                    checkLayering();
+                }, 1000);
+            });
     }
 
     // go to initial function
@@ -76,30 +86,50 @@ document.addEventListener('DOMContentLoaded', function () {
                 lastBrownWeight.value = (data.weight <= 0) ? "0" : data.weight;
 
                 // get the ratio
-                let textRatio = "";
+                let brownRatio;
+                // get the next green ratio
+                let greenRatio = Number(currentBrownWeight == 0 ? currentGreenWeight : 1);
+
                 // if brown, calculate by adding the weight to brown
-                if (currentMaterial == "Brown") textRatio = `${(data.weight + currentBrownWeight) / (
+                if (currentMaterial == "Brown") {
+                    // get the next brown ratio
+                    brownRatio = Number((data.weight + currentBrownWeight) / (
                         (currentGreenWeight == 0) ?
                             1 : currentGreenWeight
-                    )} : ${currentGreenWeight == 0 ?
-                        currentGreenWeight : 1}`;
+                    )).toLocaleString();    // limit the decimal
+                }
 
                 // if green, calculate by dividing the weight to brown
-                else if (currentMaterial == "Green") textRatio = `${currentBrownWeight / (data.weight + currentGreenWeight)} : 1`;
+                else if (currentMaterial == "Green") {
+                    brownRatio = Number(currentBrownWeight / (data.weight + currentGreenWeight)).toLocaleString(); // limit the decimal
+                }
 
                 // prompt the ratio to the web
-                ratioAfterAdding.textContent = `Your current ratio after adding is: ${textRatio}`;
+                ratioAfterAdding.textContent = `Your current ratio after adding is: ${brownRatio} : ${greenRatio}`;
 
-                // check if the submit buttons must be clickable or not depending on weight value
+                // check if the submit buttons must be clickable or not depending on weight value and ratio
                 submitFormButton.disabled = (data.weight <= 0) ? true : false;
                 topBrownLayerButton.disabled = (data.weight <= 0) ? true : false;
-                if (finishButton) finishButton.disabled = (data.weight <= 0) ? true : false;
+                if (finishButton) {
+                    // check the next ratio
+                    let finalBrownWeight = Number((3 * (data.weight + currentGreenWeight)) - currentBrownWeight).toLocaleString();
+
+                    // check ratios and weight if finish button should be done or not
+                    finishButton.disabled = ( data.weight <= 0 || brownRatio >= 3 || finalBrownWeight > 100 ) ? true : false;
+                    finishButton.textContent = `Finish up compost by adding this ${data.weight} green material and ${finalBrownWeight} top most brown material`
+                };
 
                 // loop back to get new weight
                 createCompost();
             })
             // error checker
-            .catch(error => console.error(error));
+            .catch(error => {
+                console.error(error);
+                // loop back to check layering if there is error
+                setTimeout(function () {
+                    checkLayering();
+                }, 1000);
+            });
     }
 
     // change the hidden element to show
