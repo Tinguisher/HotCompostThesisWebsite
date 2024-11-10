@@ -290,8 +290,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 // if the setting up of hot compost is error, output it in console
                 if (data.status == "error") return (console.error(data.message));
 
-                // go to dashboard if done
-                window.location = './dashboard.html'
+                // go back to check layering
+                checkLayering();
             })
             // error checker
             .catch(error => console.error(error));
