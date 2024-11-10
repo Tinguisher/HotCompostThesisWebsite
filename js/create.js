@@ -115,16 +115,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 // if brown, calculate by adding the weight to brown
                 if (currentMaterial == "Brown") {
                     // get the next brown ratio
-                    brownRatio = Number((data.weight + currentBrownWeight) / (
+                    brownRatio = Number((((data.weight < 0) ? (0) : (data.weight)) + currentBrownWeight) / (
                         (currentGreenWeight == 0) ?
                             1 : currentGreenWeight
                     )).toLocaleString();    // limit the decimal
                 }
-
+                
                 // if green, calculate by dividing the weight to brown
                 else if (currentMaterial == "Green") {
                     brownRatio = Number(currentBrownWeight / (data.weight + currentGreenWeight)).toLocaleString(); // limit the decimal
                 }
+                
 
                 // prompt the ratio to the web
                 ratioAfterAdding.textContent = `Your current ratio after adding is: ${brownRatio} : ${greenRatio}`;
