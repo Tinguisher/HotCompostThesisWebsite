@@ -1,5 +1,10 @@
 // Load js if HTML is done
 document.addEventListener('DOMContentLoaded', function () {
+    // if there is click in back button, go to dashboard
+    const backButton = document.getElementById("backButton");
+    backButton.addEventListener('click', () => {
+        window.location = '../pages/dashboard.html';
+    })
 
     // get the data of the sensor for this compost id
     fetch(`../contexts/GetCompostHistoryProcess.php`)

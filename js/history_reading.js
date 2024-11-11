@@ -9,6 +9,12 @@ document.addEventListener('DOMContentLoaded', function () {
     // if there is no compostID in the url, go back to dashboard
     if (!compostID) window.location = '../pages/dashboard.html';
 
+    // if there is click in back button, go to dashboard
+    const backButton = document.getElementById("backButton");
+    backButton.addEventListener('click', () => {
+        window.location = '../pages/dashboard.html';
+    })
+
     // get the data of the sensor for this compost id
     fetch(`../contexts/GetSensorHistoryProcess.php?compostID=${compostID}`)
         // get response as json
