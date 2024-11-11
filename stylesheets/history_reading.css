@@ -1,0 +1,166 @@
+body, h1, h2, table, th, td, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #110d14; 
+    color: #ffffff;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    padding: 20px 40px; /* Increased padding for balanced look */
+    background-color: #110d14;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 100px;
+    height: 100px; 
+    margin-right: 15px; /* Space between logo and text */
+}
+
+.header h1 {
+    font-size: 3rem;
+    color: #ffffff;
+    font-weight: 600; /* Bold intensity*/
+    margin: 0; /* Reset any unwanted margin */
+}
+
+/* Section Heading with Back Button */
+.heading-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 30px auto 20px;
+    width: 90%;
+    max-width: 1200px;
+}
+
+/* Back Button Styling */
+.back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.back-button img {
+    width: 35px; /* Adjust size of the icon */
+    height: 35px;
+}
+
+.back-button:hover {
+    transform: scale(1.1);
+}
+
+/* Section Heading */
+.sensor-readings h2 {
+    font-size: 1.7rem; 
+    color: #95FF80; 
+    font-weight: 600;
+}
+
+/* Table Styling */
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: #1b181e; /* Darker grey for the table background */
+    text-align: center; /* Center-align entire table */
+}
+
+th, td {
+    padding: 15px;
+    text-align: center; /* Center-align table headers and rows */
+    /* border-bottom: 1px solid #444; */
+    color: #ffffff;
+    font-size: 0.9rem; 
+}
+
+th {
+    font-weight: bold;
+}
+
+/* Alternate row background colors for readability */
+tbody tr:nth-child(odd) {
+    background-color: #302C33; /* Darker color for first, third rows, etc. */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #1F1B22; /* Lighter grey color for second, fourth rows, etc. */
+}
+
+/* Responsive Styles */
+
+/* For tablets and smaller devices */
+@media (max-width: 768px) {
+    .header-left {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .header h1 {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .heading-container {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    table {
+        width: 100%;
+        font-size: 0.85rem;
+    }
+
+    th, td {
+        padding: 10px;
+    }
+
+    .sensor-readings h2 {
+        font-size: 1.5rem;
+        margin: 20px auto; 
+    }
+
+    .back-button img {
+        width: 30px; /* Reduce size of back button for smaller devices */
+        height: 30px;
+    }
+}
+
+/* For very small devices (mobile) */
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.5rem; /* Reduce size of the title for mobile */
+    }
+
+    th, td {
+        font-size: 0.8rem; /* Further reduce text size */
+    }
+
+    .sensor-readings h2 {
+        font-size: 1.2rem; /* Smaller heading for mobile */
+        margin: 15px auto; /* Less spacing for compact look */
+    }
+
+    .back-button {
+        margin-left: 10px; /* Adjust for very small screens */
+    }
+
+    .back-button img {
+        width: 25px; /* Reduce size of back button for very small screens */
+        height: 25px;
+    }
+}

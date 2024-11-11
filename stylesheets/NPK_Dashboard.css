@@ -1,0 +1,113 @@
+/* General Reset */
+body, h1, p, div, img {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Body Background */
+body {
+    background-color: #110d14; 
+    color: #ffffff;
+}
+
+/* Header Section */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    padding: 20px 40px; 
+    background-color: #110d14;
+    height: 140px; 
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 100px; 
+    height: auto;  
+    margin-right: 15px;
+}
+
+.header h1 {
+    font-size: 3rem; 
+    font-weight: 600;
+    margin: 0; /* Remove default margins */
+    
+    color: #ffffff;
+}
+
+/* Dashboard Container */
+.dashboard-container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 60px auto;
+    padding: 40px;
+    background-color: #1b181e;
+    border-radius: 20px;
+    text-align: center;
+}
+
+/* Elements Container */
+.elements-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.element {
+    text-align: center;
+}
+
+.element-icon {
+    width: 150px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.element-percentage {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+/* Go Back Button */
+.button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.go-back-button {
+    width: 400px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.go-back-button:hover {
+    transform: scale(1.05);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .elements-container {
+        flex-direction: column;
+    }
+
+    .element-icon {
+        width: 120px;
+    }
+
+    .element-percentage {
+        font-size: 1.2rem;
+    }
+
+    .go-back-button {
+        width: 120px;
+    }
+}
