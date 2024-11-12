@@ -31,6 +31,7 @@ try{
     $sql = "UPDATE `layer`
     SET `part` = 'MistingRequest'
     WHERE `part` = 'Top Layer'
+        AND weight > 0
         AND hotcompost_id = (
             SELECT id
                 FROM `hotcompost`

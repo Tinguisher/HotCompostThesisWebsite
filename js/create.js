@@ -160,6 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
         addLayerForm.hidden = true;
         currentRatio.hidden = true;
         ratioAfterAdding.hidden = true;
+        topBrownLayerDiv.hidden = true;
     }
 
     // show only the div for top layer

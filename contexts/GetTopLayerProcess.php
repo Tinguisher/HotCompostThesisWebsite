@@ -24,7 +24,7 @@ $compostTopLayer = $result->fetch_assoc();
 
 // if there is compost that is in top layer, create one for error check
 if (!$compostTopLayer) {
-    $compostTopLayer['weight'] = [
+    $compostTopLayer = [
         'weight' => 0,
         'part' => "None"
     ];
