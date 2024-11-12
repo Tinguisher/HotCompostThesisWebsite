@@ -15,6 +15,12 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location = '../pages/dashboard.html';
     })
 
+    // if there is click in logo, go to dashboard
+    const logoButton = document.getElementById("logoButton");
+    logoButton.addEventListener('click', () => {
+        window.location = '../pages/dashboard.html';
+    })
+
     // get the data of the sensor for this compost id
     fetch(`../contexts/GetSensorHistoryProcess.php?compostID=${compostID}`)
         // get response as json

@@ -10,12 +10,6 @@ $nitrogenReading = $_POST['inputNitrogenReading'];
 $phosphorusReading = $_POST['inputPhosphorusReading'];
 $potassiumReading = $_POST['inputPotassiumReading'];
 
-// check if there is empty input of data
-if ( empty($nitrogenReading) || empty($phosphorusReading) || empty($potassiumReading)){
-    // make an error response
-    exit("Error. All sensor values are required");
-};
-
 // access database
 $mysqli = require_once "./database.php";
 

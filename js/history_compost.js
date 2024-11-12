@@ -6,6 +6,12 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location = '../pages/dashboard.html';
     })
 
+    // if there is click in logo, go to dashboard
+    const logoButton = document.getElementById("logoButton");
+    logoButton.addEventListener('click', () => {
+        window.location = '../pages/dashboard.html';
+    })
+
     // get the data of the sensor for this compost id
     fetch(`../contexts/GetCompostHistoryProcess.php`)
         // get response as json
@@ -56,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
             compostID.textContent = compost.id;
             status.textContent = compost.status;
             createdAt.textContent = compost.createdAt;
-            summary.textContent = "View Summary";
+            summary.textContent = "View";
 
             // if there is click on view summary button
             summary.addEventListener('click', () => {

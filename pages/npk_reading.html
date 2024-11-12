@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NPK | Hot Compost</title>
     <link rel="icon" type="image/png" href="../assets/Thesis Logo.png">
-    <link rel="stylesheet" href="../stylesheets/NPK_Dashboard.css">
+    <link rel="stylesheet" href="../stylesheets/npk_reading.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <div class="header">
-        <div class="header-left">
+        <div id="logoButton" class="header-left">
             <img class="logo" src="../assets/Thesis Logo.png" alt="Thesis Project Logo">
             <h1>AutoComp</h1>
         </div>
@@ -22,22 +22,23 @@
         <div class="elements-container">
             <div class="element">
                 <img src="../assets/N.png" alt="Nitrogen" class="element-icon">
-                <p class="element-percentage">69%</p>
+                <p id="nitrogenPercent" class="element-percentage">69%</p>
             </div>
             <div class="element">
                 <img src="../assets/P.png" alt="Phosphorus" class="element-icon">
-                <p class="element-percentage">69%</p>
+                <p id="phosphorusPercent" class="element-percentage">69%</p>
             </div>
             <div class="element">
                 <img src="../assets/K.png" alt="Potassium" class="element-icon">
-                <p class="element-percentage">69%</p>
+                <p id="potassiumPercent" class="element-percentage">69%</p>
             </div>
         </div>
 
         <div class="button-container">
-            <img src="../assets/Go Back button.png" alt="Go Back" class="go-back-button">
+            <img src="../assets/Go Back button.png" alt="Go Back" id="backButton" class="go-back-button">
         </div>
     </div>
 </body>
+<script src="../js/npk_reading.js"> </script>
 
 </html>
