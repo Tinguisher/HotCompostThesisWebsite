@@ -28,8 +28,29 @@ try{
     $stmt->close();
 
     // make a string of sql to update part to MixRequest
+    $sql = "UPDATE `layer`
+    SET `part` = 'MistingRequest'
+    WHERE `part` = 'Top Layer'
+        AND hotcompost_id = (
+            SELECT id
+                FROM `hotcompost`
+                WHERE status LIKE 'Layering'
+                LIMIT 1
+            );";
+
+    // prepare the statement
+    $stmt = $mysqli->prepare($sql);
+
+    // execute the statement
+    $stmt->execute();
+
+    // close the statement
+    $stmt->close();
+
+    // make a string of sql to update part to MixRequest
     $sql = "UPDATE `hotcompost`
-        SET `lastMixed` = now()
+        SET `createdAt` = now(),
+            `lastMixed` = now()
         WHERE status = 'Layering';";
 
     // prepare the statement
@@ -41,14 +62,10 @@ try{
     // close the statement
     $stmt->close();
 
-    // check if there is top most layer already
-    include './GetTopLayerProcess.php';
-
     // make a success response and give the new material to be input by the user
     $response = [
         'status' => "success",
-        'message' => "Requested for esp32 to water and mix",
-        'topLayer' => $compostTopLayer ? true : false           //if there is compost top layer, return true else false
+        'message' => "Requested for esp32 to water and mix"
     ];
 }
 // if there is error in query

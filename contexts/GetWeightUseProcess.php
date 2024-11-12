@@ -118,7 +118,8 @@ function requestWeight () {
         'ESP32Process' => $layer['ESP32Process'],
         'mix' => $layer['mix'],
         'finish' => $layer['finish'],
-        'topLayer' => $compostTopLayer ? true : false,
+        'topLayer' => $compostTopLayer['part'] == "Top Layer" ? true : false,
+        'mistButton' => $compostTopLayer['mistButton'],
         'brownWeight' => $compostWeight[0]['weight'] ?? 0,
         'greenWeight' => $compostWeight[1]['weight'] ?? 0
     ];

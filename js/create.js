@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (data.ESP32Process) return (waitESP32());
 
                 // if there are brown and material consecutively, mix first before proceeding to next
-                if (data.mix) return (mixRequest());
+                if (data.mix || data.mistButton) return (mixRequest());
 
                 // get the ratio
                 let brownRatio = (data.greenWeight > 0) ? Number(data.brownWeight / data.greenWeight).toLocaleString() : data.brownWeight;
@@ -126,7 +126,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     brownRatio = Number(currentBrownWeight / (data.weight + currentGreenWeight)).toLocaleString(); // limit the decimal
                 }
                 
-
                 // prompt the ratio to the web
                 ratioAfterAdding.textContent = `Your current ratio after adding is: ${brownRatio} : ${greenRatio}`;
 
@@ -237,7 +236,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // if there is click on the finish button
     finishButton.addEventListener('click', () => {
-
         // get the data from the form
         const addLayer = new FormData(addLayerForm);
 

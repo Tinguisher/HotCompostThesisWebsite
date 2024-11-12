@@ -22,6 +22,17 @@ $result = $stmt -> get_result();
 // get only one from the executed statement
 $compostTopLayer = $result->fetch_assoc();
 
+// if there is compost that is in top layer, create one for error check
+if (!$compostTopLayer) {
+    $compostTopLayer['weight'] = [
+        'weight' => 0,
+        'part' => "None"
+    ];
+}
+
+// if there is weight already in the top error, make the mistbutton true
+$compostTopLayer['mistButton'] = ($compostTopLayer['weight'] != 0) ? true : false;
+
 // free data, close the statement
 $result -> free();
 $stmt -> close();

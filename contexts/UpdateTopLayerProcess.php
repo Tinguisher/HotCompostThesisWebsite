@@ -30,8 +30,7 @@ $mysqli = require_once "./database.php";
 
 // create a sql to update the weight and request for the last part to mist
 $sql = "UPDATE `layer`
-    SET `weight` = ?,
-        `part` = 'MistingRequest'
+    SET `weight` = ?
     WHERE hotcompost_id = (
             SELECT id
             FROM `hotcompost`
