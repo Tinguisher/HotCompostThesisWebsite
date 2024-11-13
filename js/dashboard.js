@@ -1,11 +1,15 @@
 // Load js if HTML is done
 document.addEventListener('DOMContentLoaded', function () {
-    // check all compost history
+    // check all compost history and go to history of hot compost if there is click
     const historyCompostButton = document.getElementById("historyCompostButton");
-
-    // go to history of hot compost if there is click
     historyCompostButton.addEventListener('click', () => {
         window.location.href = './history_compost.html';
+    })
+
+    // navigate to npk page if there is click
+    const useNPKButton = document.getElementById("useNPKButton");
+    useNPKButton.addEventListener('click', () => {
+        window.location.href = './npk_reading.html';
     })
 
     // get the status of current hot compost
@@ -14,6 +18,38 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         // get objects from fetch
         .then(data => {
+            // get element ids for data to be input
+            const moisturePercentage = document.getElementById("moisturePercentage");
+            const temperatureCelsius = document.getElementById("temperatureCelsius");
+            const time = document.getElementById("time");
+
+            // put the values in the element
+            moisturePercentage.textContent = `${data.sensor.moisturePercent}%`;
+            temperatureCelsius.textContent = `${data.sensor.temperatureCelsius}°C`;
+            time.textContent = `TIME: ${data.sensor.time}`;
+
+            // if there is click in current history button, go to its sensor page
+            const currentHistoryButton = document.getElementById("currentHistoryButton");
+            currentHistoryButton.addEventListener('click', () => {
+                window.location.href = `./history_reading.html?compostID=${data.sensor.id}`
+            })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             // get the container id
             const sensorContainer = document.getElementById("sensorContainer");
 
@@ -40,31 +76,31 @@ document.addEventListener('DOMContentLoaded', function () {
                 // go back to check new sensor reading
                 return;
             }
-            // if there is compost in progress
-            // put the moisture reading inside the container
-            const moisturePercentage = document.createElement('p');
-            moisturePercentage.textContent = `Moisture Percentage: ${data.sensor.moisturePercent}`;
-            sensorContainer.appendChild(moisturePercentage);
+            // // if there is compost in progress
+            // // put the moisture reading inside the container
+            // const moisturePercentage = document.createElement('p');
+            // moisturePercentage.textContent = `Moisture Percentage: ${data.sensor.moisturePercent}`;
+            // sensorContainer.appendChild(moisturePercentage);
 
-            // put the temperature reading inside the container
-            const temperatureCelsius = document.createElement('p');
-            temperatureCelsius.textContent = `Temperature: ${data.sensor.temperatureCelsius}`;
-            sensorContainer.appendChild(temperatureCelsius);
+            // // put the temperature reading inside the container
+            // const temperatureCelsius = document.createElement('p');
+            // temperatureCelsius.textContent = `Temperature: ${data.sensor.temperatureCelsius}`;
+            // sensorContainer.appendChild(temperatureCelsius);
 
-            // put the time inside the container
-            const time = document.createElement('p');
-            time.textContent = `Time: ${data.sensor.time}`;
-            sensorContainer.appendChild(time);
+            // // put the time inside the container
+            // const time = document.createElement('p');
+            // time.textContent = `Time: ${data.sensor.time}`;
+            // sensorContainer.appendChild(time);
 
-            // create a button to see current compost history
-            const currentHistoryButton = document.createElement('button');
-            currentHistoryButton.textContent = "View Current Compost History";
-            sensorContainer.appendChild(currentHistoryButton);
+            // // create a button to see current compost history
+            // const currentHistoryButton = document.createElement('button');
+            // currentHistoryButton.textContent = "View Current Compost History";
+            // sensorContainer.appendChild(currentHistoryButton);
 
-            // if there is click in the currentHistoryButton, go to check its history
-            currentHistoryButton.addEventListener('click', () => {
-                window.location.href = `./history_reading.html?compostID=${data.sensor.id}`
-            })
+            // // if there is click in the currentHistoryButton, go to check its history
+            // currentHistoryButton.addEventListener('click', () => {
+            //     window.location.href = `./history_reading.html?compostID=${data.sensor.id}`
+            // })
 
             return;
 

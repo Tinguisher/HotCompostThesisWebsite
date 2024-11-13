@@ -1,0 +1,148 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #110d14;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px 40px;
+    width: 100%; /* Ensures the header spans the full width */
+    justify-content: flex-start;
+    background-color: transparent; /* Make the header blend with the background */
+}
+
+.header .logo {
+    width: 80px;
+    height: 80px;
+}
+
+.header h1 {
+    font-size: 3rem;
+    color: #ffffff;
+}
+
+.dashboard {
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1400px; /* Takes up more width to utilize space better */
+    padding: 30px;
+    padding-left: 0px;
+}
+
+.status-section {
+    background-color: #1F1B22;
+    border-radius: 20px;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 55%;
+    height: 500px; /* Increased height */
+}
+
+.status-icons {
+    display: flex;
+    gap: 80px; /* Adjust gap for a more balanced look */
+    justify-content: center;
+    align-items: center;
+}
+
+.humidity,
+.temperature {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon {
+    width: 90%; /* Larger icon size for balance */
+}
+
+.value {
+    position: absolute;
+    bottom: 25%; /* Move values lower within the icon for better positioning */
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.timestamp {
+    text-align: center;
+    font-size: 1.4em;
+    margin-top: auto; /* Push timestamp towards the bottom */
+}
+
+.buttons-box {
+    background-color: #1F1B22;
+    border-radius: 20px;
+    padding: 80px 50px; /* Increased padding for a more balanced look */
+    width: 40%; /* Make the button box slightly larger */
+    height: 500px; /* Increased height to match the status section */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center buttons within the box */
+    align-items: center;
+}
+
+.buttons-section {
+    display: flex;
+    flex-direction: column;
+    gap: 50px; /* Increase spacing between buttons */
+    align-items: center;
+}
+
+.button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.button:hover {
+    transform: scale(1.05);
+}
+
+.button img {
+    width: 500px; /* Adjusted width for consistency */
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    .dashboard {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .status-section,
+    .buttons-box {
+        width: 100%;
+    }
+
+    .buttons-section {
+        width: 100%;
+    }
+
+    .button img {
+        width: 150px; /* Resized for smaller screens */
+    }
+}

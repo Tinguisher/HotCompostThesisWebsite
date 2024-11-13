@@ -4,16 +4,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../stylesheets/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <title>Dashboard | Hot Compost</title>
     <link rel="icon" type="image/png" href="../assets/Thesis Logo.png">
 </head>
 
 <body>
+    <!-- Header Section -->
+    <header class="header">
+        <img src="../assets/Thesis Logo.png" alt="Logo" class="logo">
+        <h1>AutoComp</h1>
+    </header>
+    <!-- Main Dashboard Section -->
+    <main class="dashboard">
+        <section class="status-section">
+            <div class="status-icons">
+                <div class="humidity">
+                    <img src="../assets/moist icon.png" alt="Moisture Icon" class="icon">
+                    <p id="moisturePercentage" class="value">69%</p>
+                </div>
+                <div class="temperature">
+                    <img src="../assets/temp icon.png" alt="Temperature Icon" class="icon">
+                    <p id="temperatureCelsius" class="value">-127°C</p>
+                </div>
+            </div>
+            <div class="timestamp">
+                <p id="time">TIME: 2024-10-19 | 11:10:55</p>
+            </div>
+        </section>
+
+        <section class="buttons-box">
+            <div class="buttons-section">
+                <button id="historyCompostButton" class="button">
+                    <img src="../assets/prev_compost_button.png" alt="Previous Compost History">
+                </button>
+                <button id="currentHistoryButton" class="button">
+                    <img src="../assets/view_current_compost_history_button.png" alt="View Current Compost History">
+                </button>
+                <button id="useNPKButton" class="button">
+                    <img src="../assets/use_npk_button.png" alt="Use NPK">
+                </button>
+            </div>
+        </section>
+    </main>
+
     <h1>Latest Record of the Automated Hot Compost Maker</h1>
     <div id="sensorContainer">
         <h1>LOADING...</h1>
     </div>
-    <button id="historyCompostButton">Previous Compost History</button>
 </body>
 <script src="../js/dashboard.js"> </script>
 
