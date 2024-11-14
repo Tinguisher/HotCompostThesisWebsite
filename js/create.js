@@ -18,6 +18,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var currentGreenWeight;
     var currentMaterial;
 
+    // ratio per volume in the bucket
+    var brownVolume = 1100;
+    var greenVolume = 3850;
+    var lowRatio = greenVolume / (2 * brownVolume);
+    var highRatio = greenVolume / (3 * brownVolume);
+
     // function to be repeated in initial and after water and mix
     checkLayering = () => {
         // get if there is a need to use weight sensor to create hotcompost
@@ -34,11 +40,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // if there are brown and material consecutively, mix first before proceeding to next
                 if (data.mix || data.mistButton) return (mixRequest());
-
-                // get the ratio
-                let brownRatio = (data.greenWeight > 0) ? Number(data.brownWeight / data.greenWeight).toLocaleString() : data.brownWeight;
-                // get the next green ratio
-                let greenRatio = Number(data.greenWeight > 0 ? 1 : 0);
+                
+                // get the brown and green ratio
+                let brownRatio = data.brownWeight > 0 ? 1 : 0;
+                let greenRatio = (data.brownWeight) > 0 ? Number(data.greenWeight / data.brownWeight).toLocaleString() : data.greenWeight;
 
                 // output the current ratio
                 currentRatio.textContent = `Your current ratio is: ${brownRatio} : ${greenRatio}`;
@@ -107,23 +112,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 weightValue.value = (data.weight <= 0) ? "0" : data.weight;
                 lastBrownWeight.value = (data.weight <= 0) ? "0" : data.weight;
 
-                // get the ratio
-                let brownRatio;
-                // get the next green ratio
-                let greenRatio = Number(currentBrownWeight == 0 ? currentGreenWeight : 1);
+                // get the brown and green ratio
+                let brownRatio = Number(currentBrownWeight > 0 ? 1 : 0);
+                let greenRatio;
 
-                // if brown, calculate by adding the weight to brown
+                // if brown, calculate by dividing the weight to green
                 if (currentMaterial == "Brown") {
-                    // get the next brown ratio
-                    brownRatio = Number((((data.weight < 0) ? (0) : (data.weight)) + currentBrownWeight) / (
-                        (currentGreenWeight == 0) ?
-                            1 : currentGreenWeight
-                    )).toLocaleString();    // limit the decimal
+                    // get the next green ratio
+                    greenRatio = Number(currentGreenWeight / (
+                        (data.weight == 0 && currentBrownWeight == 0) ?
+                            1 : (data.weight + currentBrownWeight)
+                        )
+                    ).toLocaleString();
                 }
                 
-                // if green, calculate by dividing the weight to brown
+                // if green, calculate by adding the weight to green
                 else if (currentMaterial == "Green") {
-                    brownRatio = Number(currentBrownWeight / (data.weight + currentGreenWeight)).toLocaleString(); // limit the decimal
+                    greenRatio = Number( (currentGreenWeight + data.weight) / currentBrownWeight).toLocaleString(); // limit the decimal
                 }
                 
                 // prompt the ratio to the web
@@ -133,12 +138,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 submitFormButton.disabled = (data.weight <= 0) ? true : false;
                 topBrownLayerButton.disabled = (data.weight <= 0) ? true : false;
                 if (finishButton) {
-                    // check the next ratio
-                    let finalBrownWeight = Number((3 * (data.weight + currentGreenWeight)) - currentBrownWeight).toLocaleString();
+                    // get the value of ratio depending on the high of ratio or lowness
+                    let finalHighBrownWeight = Number(( (currentGreenWeight + data.weight) / lowRatio) - currentBrownWeight).toLocaleString();
+                    let finalLowBrownWeight = Number(( (currentGreenWeight + data.weight) / highRatio) - currentBrownWeight).toLocaleString();
 
                     // check ratios and weight if finish button should be done or not
-                    finishButton.disabled = (data.weight <= 0 || brownRatio >= 3 || finalBrownWeight < 100) ? true : false;
-                    finishButton.textContent = `Finish up compost by adding this ${data.weight} green material and ${finalBrownWeight} top most brown material`
+                    finishButton.disabled = (data.weight <= 0 || greenRatio < lowRatio || finalLowBrownWeight < 100) ? true : false;
+                    
+                    finishButton.textContent = `Finish up compost by adding this ${data.weight} green material and ${finalLowBrownWeight} to ${finalHighBrownWeight} top most brown material`;
+
+
+
+
+                    // // check the next ratio
+                    // let finalBrownWeight = Number((3 * (data.weight + currentGreenWeight)) - currentBrownWeight).toLocaleString();
+
+                    // // check ratios and weight if finish button should be done or not
+                    // finishButton.disabled = (data.weight <= 0 || brownRatio >= 3 || finalBrownWeight < 100) ? true : false;
+                    // finishButton.textContent = `Finish up compost by adding this ${data.weight} green material and ${finalBrownWeight} top most brown material`
                 };
 
                 // loop back to get new weight
