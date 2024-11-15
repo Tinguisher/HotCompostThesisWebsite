@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 lastBrownWeight.value = (data.weight <= 0) ? "0" : data.weight;
 
                 // get the brown and green ratio
-                let brownRatio = Number(currentBrownWeight > 0 ? 1 : 0);
+                let brownRatio = Number(currentBrownWeight > 0 ? 1 : data.weight);
                 let greenRatio;
 
                 // if brown, calculate by dividing the weight to green
@@ -139,23 +139,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 topBrownLayerButton.disabled = (data.weight <= 0) ? true : false;
                 if (finishButton) {
                     // get the value of ratio depending on the high of ratio or lowness
-                    let finalHighBrownWeight = Number(( (currentGreenWeight + data.weight) / lowRatio) - currentBrownWeight).toLocaleString();
-                    let finalLowBrownWeight = Number(( (currentGreenWeight + data.weight) / highRatio) - currentBrownWeight).toLocaleString();
+                    let finalLowBrownWeight = Number(( (currentGreenWeight + data.weight) / lowRatio) - currentBrownWeight).toLocaleString();
+                    let finalHighBrownWeight = Number(( (currentGreenWeight + data.weight) / highRatio) - currentBrownWeight).toLocaleString();
 
                     // check ratios and weight if finish button should be done or not
                     finishButton.disabled = (data.weight <= 0 || greenRatio < lowRatio || finalLowBrownWeight < 100) ? true : false;
-                    
                     finishButton.textContent = `Finish up compost by adding this ${data.weight} green material and ${finalLowBrownWeight} to ${finalHighBrownWeight} top most brown material`;
-
-
-
-
-                    // // check the next ratio
-                    // let finalBrownWeight = Number((3 * (data.weight + currentGreenWeight)) - currentBrownWeight).toLocaleString();
-
-                    // // check ratios and weight if finish button should be done or not
-                    // finishButton.disabled = (data.weight <= 0 || brownRatio >= 3 || finalBrownWeight < 100) ? true : false;
-                    // finishButton.textContent = `Finish up compost by adding this ${data.weight} green material and ${finalBrownWeight} top most brown material`
                 };
 
                 // loop back to get new weight
