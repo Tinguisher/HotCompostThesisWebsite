@@ -12,12 +12,32 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = './npk_reading.html';
     })
 
+    const mistButton = document.getElementById("mistButton");
+    mistButton.addEventListener('click', () => {
+        // get the status of current hot compost
+        fetch('../contexts/RequestMistingProcess.php')
+        // get response as json
+        .then(response => response.json())
+        // get objects from fetch
+        .then(data => {
+            if (data.status == "success"){
+                console.log("NOICE");
+            }
+        })
+    })
+        
+    
+
     // get the status of current hot compost
     fetch('../contexts/GetLatestRecordProcess.php')
         // get response as json
         .then(response => response.json())
         // get objects from fetch
         .then(data => {
+
+            if (data.message == "Create") return;
+
+
             // get element ids for data to be input
             const moisturePercentage = document.getElementById("moisturePercentage");
             const temperatureCelsius = document.getElementById("temperatureCelsius");
@@ -51,31 +71,31 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
             // get the container id
-            const sensorContainer = document.getElementById("sensorContainer");
+            // const sensorContainer = document.getElementById("sensorContainer");
 
-            // clear the content of the container
-            sensorContainer.innerHTML = "";
+            // // clear the content of the container
+            // sensorContainer.innerHTML = "";
 
-            // if there is no current in progress, create
-            if (data.message == "Create") {
-                // create a message to inform the user
-                const createMessage = document.createElement('p');
-                createMessage.textContent = "There seems to be no in progress of hot compost, Create New One?";
-                sensorContainer.appendChild(createMessage);
+            // // if there is no current in progress, create
+            // if (data.message == "Create") {
+            //     // create a message to inform the user
+            //     const createMessage = document.createElement('p');
+            //     createMessage.textContent = "There seems to be no in progress of hot compost, Create New One?";
+            //     sensorContainer.appendChild(createMessage);
 
-                // create a button to create a new compost
-                const createButton = document.createElement('button');
-                createButton.textContent = "Create New Compost";
-                sensorContainer.appendChild(createButton);
+            //     // create a button to create a new compost
+            //     const createButton = document.createElement('button');
+            //     createButton.textContent = "Create New Compost";
+            //     sensorContainer.appendChild(createButton);
 
-                // if there is click in the create button, go to create.html 
-                createButton.addEventListener('click', () => {
-                    window.location.href = './create.html';
-                });
+            //     // if there is click in the create button, go to create.html 
+            //     createButton.addEventListener('click', () => {
+            //         window.location.href = './create.html';
+            //     });
 
-                // go back to check new sensor reading
-                return;
-            }
+            //     // go back to check new sensor reading
+            //     return;
+            // }
             // // if there is compost in progress
             // // put the moisture reading inside the container
             // const moisturePercentage = document.createElement('p');
