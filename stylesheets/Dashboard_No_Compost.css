@@ -118,6 +118,11 @@ body {
 
 /* For tablets and smaller devices */
 @media (max-width: 768px) {
+    .header {
+        display: flex;
+        justify-content: center;
+    }
+
     .header-left {
         flex-direction: column;
         padding: 10px;
@@ -131,6 +136,7 @@ body {
     .logo img {
         width: 80px;
         height: 80px;
+        margin: 0;
     }
     
     .main-content {
@@ -161,6 +167,11 @@ body {
 
 /* For very small devices (mobile) */
 @media (max-width: 480px) {
+    .header {
+        display: flex;
+        justify-content: center;
+    }
+    
     .header-left {
         flex-direction: column;
         padding: 10px;
@@ -174,6 +185,7 @@ body {
     .logo img {
         width: 80px;
         height: 80px;
+        margin: 0;
     }
     
     .main-content {
