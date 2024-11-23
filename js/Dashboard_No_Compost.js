@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         // get objects from fetch
         .then(data => {
-            // // if there is a compost already, go to dashboard with reading
-            // if (data.message == "Read") return (window.location.href = './dashboard.html');
+            // if there is a compost already, go to dashboard with reading
+            if (data.message == "Read") return (window.location.href = './dashboard.html');
         })
 
         // error checker
