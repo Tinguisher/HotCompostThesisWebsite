@@ -14,18 +14,44 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const mistButton = document.getElementById("mistButton");
     mistButton.addEventListener('click', () => {
-        // get the status of current hot compost
-        fetch('../contexts/RequestMistingProcess.php')
-        // get response as json
-        .then(response => response.json())
-        // get objects from fetch
-        .then(data => {
-            if (data.status == "success"){
-                console.log("NOICE");
-            }
+        const useMisting = document.getElementById("useMisting");
+        const stopMisting = document.getElementById("stopMisting");
+
+        let payload = {};
+
+        // toggle what to show when clicking the mist button
+        if (stopMisting.hidden == true) {
+            payload = {request: "MistRequest"};
+            stopMisting.hidden = false;
+            useMisting.hidden = true;
+        }
+
+        else {
+            payload = {request: "None"};
+            stopMisting.hidden = true;
+            useMisting.hidden = false;
+        }
+
+        // request for misting to esp32
+        fetch('../contexts/RequestMistingProcess.php', {
+            method: "POST",
+            headers: {
+                // state as a json type
+                'Content-Type': 'application/json; charset=utf-8'
+            },
+            // give the request as a JSON to the server
+            body: JSON.stringify(payload)
         })
+            // get response as json
+            .then(response => response.json())
+            // get objects from fetch
+            .then(data => {
+                if (data.status == "success") {
+                    console.log("NOICE");
+                }
+            })
     })
-        
+
     // get the status of current hot compost
     fetch('../contexts/GetLatestRecordProcess.php')
         // get response as json
