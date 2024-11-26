@@ -41,6 +41,7 @@ CREATE TABLE connection(
 	nitrogen double NOT NULL,
 	phosphorus double NOT NULL,
 	potassium double NOT NULL,
+	ph double NOT NULL,
 	request varchar (50) NOT NULL,
 	CONSTRAINT PK_connection
 	PRIMARY KEY (id)

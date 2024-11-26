@@ -40,10 +40,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const phosphorusPercent = document.getElementById("phosphorusPercent");
                 const potassiumPercent = document.getElementById("potassiumPercent");
 
-                // put the values of NPK content
-                nitrogenPercent.textContent = `${data.nitrogen}%`;
-                phosphorusPercent.textContent = `${data.phosphorus}%`;
-                potassiumPercent.textContent = `${data.potassium}%`;
+                // put the values of NPK content, divide by 10 for true value
+                nitrogenPercent.textContent = `${Number(data.nitrogen / 10)}%`;
+                phosphorusPercent.textContent = `${Number(data.phosphorus / 10)}%`;
+                potassiumPercent.textContent = `${Number(data.potassium / 10)}%`;
 
                 // loop back to get new NPK
                 getNPKContent();

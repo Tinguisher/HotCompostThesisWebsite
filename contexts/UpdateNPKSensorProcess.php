@@ -9,6 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 $nitrogenReading = $_POST['inputNitrogenReading'];
 $phosphorusReading = $_POST['inputPhosphorusReading'];
 $potassiumReading = $_POST['inputPotassiumReading'];
+$pHReading = $_POST['inputPHReading'];
 
 // access database
 $mysqli = require_once "./database.php";
@@ -19,14 +20,15 @@ try{
     $sql = "UPDATE `connection`
         SET `nitrogen` = ?,
             `phosphorus` = ?,
-            `potassium` = ?
+            `potassium` = ?,
+            `ph` = ?
         WHERE `id` = 1;";
     
     // prepare the statement
     $stmt = $mysqli -> prepare ($sql);
 
     // bind the parameters to the statement
-    $stmt -> bind_param ('ddd', $nitrogenReading, $phosphorusReading, $potassiumReading);
+    $stmt -> bind_param ('dddd', $nitrogenReading, $phosphorusReading, $potassiumReading, $pHReading);
 
     // execute the statement
     $stmt -> execute();

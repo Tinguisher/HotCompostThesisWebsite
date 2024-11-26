@@ -29,13 +29,14 @@ try{
     $stmt->close();
     $result->free();
 
-    // make a success response and send the weight from the server
+    // make a success response and get the npk and ph
     $response = [
         'status' => "success",
         'message' => "Successfully got the new NPK value",
         'nitrogen' => $connection['nitrogen'],
         'phosphorus' => $connection['phosphorus'],
-        'potassium' => $connection['potassium']
+        'potassium' => $connection['potassium'],
+        'ph' => $connection['ph']
     ];
 }
 
