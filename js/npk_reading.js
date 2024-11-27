@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => console.error(error));
 
     // this is process of getting NPK from database
-    getNPKContent = () => {
+    function getNPKContent() {
         // get npk values from database
         fetch('../contexts/GetNPKValuesProcess.php')
             // get response as json
@@ -39,22 +39,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 const nitrogenPercent = document.getElementById("nitrogenPercent");
                 const phosphorusPercent = document.getElementById("phosphorusPercent");
                 const potassiumPercent = document.getElementById("potassiumPercent");
+                const pHContent = document.getElementById("pHContent");
 
                 // put the values of NPK content, divide by 10 for true value
                 nitrogenPercent.textContent = `${Number(data.nitrogen / 10)}%`;
                 phosphorusPercent.textContent = `${Number(data.phosphorus / 10)}%`;
                 potassiumPercent.textContent = `${Number(data.potassium / 10)}%`;
+                pHContent.textContent = data.ph;
 
                 // loop back to get new NPK
-                getNPKContent();
+                setTimeout(getNPKContent, 1000);
             })
             // error checker
             .catch(error => {
                 console.error(error);
-                // loop back to check layering if there is error
-                setTimeout(function () {
-                    getNPKContent();
-                }, 1000);
+                // loop back to check npk if there is error
+                setTimeout(getNPKContent, 1000);
             });
     }
 });
