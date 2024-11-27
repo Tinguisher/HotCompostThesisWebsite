@@ -76,6 +76,4 @@ $layer['ESP32Process'] = ($ESP32Process ? true: false);
 // if the layer part is top most, request for brown material
 if ($layer['part'] == "Top Layer") $layer['material'] = "Brown";
 
-// check if the hot compost can be finish up next layer
-$layer['finish'] = $layer['material'] == "Green" ? true : false;
 ?>

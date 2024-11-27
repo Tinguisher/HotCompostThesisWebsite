@@ -56,19 +56,10 @@ try{
     // close the statement
     $stmt->close();
 
-    // get the material name that will be put by the user and check if it can be finish up
-    include './GetMaterialProcess.php';
-
-    // check if the bottom layer is already mixed
-    include './GetLayerProcess.php';
-
     // make a success response and give the new material to be input by the user
     $response = [
         'status' => "success",
-        'message' => "Create",
-        'material' => $layer['material'],
-        'mix' => $layer['mix'],
-        'finish' => $layer['finish']
+        'message' => "Created a new layer"
     ];
 }
 // if there is error in query

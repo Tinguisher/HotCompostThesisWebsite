@@ -6,33 +6,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create | Hot Compost</title>
     <link rel="icon" type="image/png" href="../assets/Thesis Logo.png">
+    <link rel="stylesheet" href="../stylesheets/create.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <h1>This is the page when setting up the compost</h1>
-    <p>Your Target Brown and Green Material Ratio is <b>1 Brown : 1.167 to 1.75  Green</b></p>
-    <b id="currentRatio">Your current ratio is: </b>
-    <p id="ratioAfterAdding">Your current ratio after adding is</p>
-    <form id="addLayerForm">
-        <p id="material">Loading...</p>
-        <input type="text" id="weightValue" name="input_weightValue" value="Loading..." required />
-        <input id="submitFormButton" type="submit">
-        <button type="button" id="finishButton" hidden>Finish up compost by adding ?</button>
-    </form>
-
-    <div id="alertMixDiv" hidden>
-        <p>Please proceed to putting the material inside the machine</p>
-        <button id="mixButton">Done</button>
+    <div class="header">
+        <div class="header-left">
+            <div class="logo">
+                <img src="../assets/Thesis Logo.png" alt="Thesis Project Logo">
+            </div>
+            <h1>AutoComp</h1>
+        </div>
     </div>
 
-    <div id="topBrownLayerDiv" hidden>
-        <p>This is the last input of the user of brown material to finish</p>
-        <input type="text" id="lastBrownWeight" name="input_topBrown" value="Loading..." required />
-        <button id="topBrownLayerButton">Put the last brown material</button>
+    <!-- Compost Setup Dashboard Title -->
+    <div class="dashboard-title">
+        <h2>Compost Setup Dashboard</h2>
     </div>
 
-    <div id="waitDiv" hidden>
-        <p>Waiting for mixing or misting</p>
+    <div class="dashboard-container">
+        <div class="target-ratio">
+            <div class="target-ratio-container">
+                <h2>Target <span class="brown-text">Brown</span> & <span class="green-text">Green</span> Material Ratio
+                </h2>
+                <img src="../assets/Target Material Ratio.png" alt="Target Ratio Pie Chart">
+            </div>
+
+            <!-- Instruction & Done Button -->
+            <div id="alertMistDiv" class="instruction-section" hidden>
+                <h2>Please proceed to put the material inside the machine.</h2>
+                <img id="startMistButton" class="done-button" src="../assets/Done Button.png" alt="Done Button">
+            </div>
+
+            <!-- Instruction & Done Button -->
+            <div id="waitDiv" class="instruction-section2" hidden>
+                <h2>Waiting for Misting</h2>
+                <div class="loading-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+        <div id="inputDiv" class="ratios-container">
+            <div class="ratios-section">
+                <div class="current-ratio">
+                    <h2>Your Current Ratio is:</h2>
+                    <div class="ratio-value">
+                        <brown-material id="currentBrownRatio">-</brown-material>
+                        <span class="ratio-colon"> : </span>
+                        <green-material id="currentGreenRatio">-.---</green-material>
+                    </div>
+
+                </div>
+                <div class="after-adding-ratio">
+                    <h2>Ratio After Adding:</h2>
+                    <div class="ratio-value">
+                        <brown-material id="afterBrownRatio">-</brown-material>
+                        <span class="ratio-colon">:</span>
+                        <green-material id="afterGreenRatio">-.---</green-material>
+                    </div>
+                </div>
+            </div>
+            <div class="action-section">
+                <div class="material-and-buttons">
+                    <div id="bottomLayerDiv" class="material-submit-section">
+                        <h2>Material to be Submitted:</h2>
+                        <div id="material" class="material-type"></div>
+                        <div class="input-section">
+                            <input type="text" id="weightValue" placeholder="Input Value">
+                            <img id="submitFormButton" class="submit-button" src="../assets/Submit Button.png"
+                                alt="Submit Button">
+                        </div>
+                    </div>
+                    <div id="topBrownLayerDiv" class="material-submit-section" hidden>
+                        <h2><span class="highlight-red">Insert the <span class="red-text">FINAL</span></span> <span
+                                class="brown-text">Brown</span> Material.</h2>
+                        <div class="input-section">
+                            <input type="text" id="lastBrownWeight" name="input_topBrown" placeholder="Input Value">
+                            <img id="topBrownLayerButton" class="submit-button" src="../assets/Submit Button.png"
+                                alt="Submit Button">
+                        </div>
+                    </div>
+                    <div id="brownMisting" class="use-misting-brown">
+                        <button class="misting-button-brown">Use Misting</button>
+                    </div>
+                    <div id="greenMisting" class="buttons-section">
+                        <div class="use-misting-green">
+                            <button class="misting-button-green">Use Misting</button>
+                        </div>
+                        <div class="finish-up">
+                            <button id="finishButton" class="finish-up-button">Finish up</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 <script src="../js/create.js"> </script>

@@ -101,11 +101,8 @@ function requestWeight () {
     // get the material name that will be put by the user
     include './GetMaterialProcess.php';
 
-    // check if the bottom layer is already mixed
+    // check if the bottom and top layer already mist
     include './GetLayerProcess.php';
-
-    // check if there is top most layer already
-    include './GetTopLayerProcess.php';
 
     // get the weight of brown and green that is in layering
     include './GetWeightRatioLayeringProcess.php';
@@ -116,10 +113,8 @@ function requestWeight () {
         'message' => "Create",
         'material' => $layer['material'],
         'ESP32Process' => $layer['ESP32Process'],
-        'mix' => $layer['mix'],
-        'finish' => $layer['finish'],
+        'mist' => $layer['mist'],
         'topLayer' => $compostTopLayer['part'] == "Top Layer" ? true : false,
-        'mistButton' => $compostTopLayer['mistButton'],
         'brownWeight' => $compostWeight[0]['weight'] ?? 0,
         'greenWeight' => $compostWeight[1]['weight'] ?? 0
     ];

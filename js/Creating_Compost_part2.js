@@ -1,10 +1,15 @@
 // Load js if HTML is done
 document.addEventListener('DOMContentLoaded', function () {
     // get global variables to be manipulated
-    const weightValue = document.getElementById("weightValue");
+    const material = document.getElementById("material");
+    const addLayerForm = document.getElementById("addLayerForm");
     const submitFormButton = document.getElementById("submitFormButton");
-    const alertMistDiv = document.getElementById("alertMistDiv");
-    const startMistButton = document.getElementById("startMistButton");
+    const finishButton = document.getElementById("finishButton");
+    const currentRatio = document.getElementById("currentRatio");
+    const ratioAfterAdding = document.getElementById("ratioAfterAdding");
+    const alertMixDiv = document.getElementById("alertMixDiv");
+    const waitDiv = document.getElementById("waitDiv");
+    const mixButton = document.getElementById("mixButton");
     const topBrownLayerDiv = document.getElementById("topBrownLayerDiv");
     const lastBrownWeight = document.getElementById("lastBrownWeight");
 
@@ -20,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var highRatio = greenVolume / (3 * brownVolume);
 
     // function to be repeated in initial and after water and mix
-    function checkLayering() {
+    checkLayering = () => {
         // get if there is a need to use weight sensor to create hotcompost
         fetch('../contexts/GetWeightUseProcess.php')
             // get response as json
@@ -31,20 +36,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (data.message == "In Progress") return (window.location = './dashboard.html');
 
                 // if esp32 needs to process, wait for esp32
-                if (data.ESP32Process) return (waitESP32());                
+                if (data.ESP32Process) return (waitESP32());
 
-                // if there are brown and material consecutively, mist first before proceeding to next
-                if (data.mist) return (mistRequest());
-
+                // if there are brown and material consecutively, mix first before proceeding to next
+                if (data.mix || data.mistButton) return (mixRequest());
+                
                 // get the brown and green ratio
                 let brownRatio = data.brownWeight > 0 ? 1 : 0;
                 let greenRatio = (data.brownWeight) > 0 ? Number(data.greenWeight / data.brownWeight).toLocaleString() : data.greenWeight;
 
-                // get the variables to put the current ratio
-                const currentBrownRatio = document.getElementById("currentBrownRatio");
-                const currentGreenRatio = document.getElementById("currentGreenRatio");
-                currentBrownRatio.textContent = brownRatio;
-                currentGreenRatio.textContent = greenRatio;
+                // output the current ratio
+                currentRatio.textContent = `Your current ratio is: ${brownRatio} : ${greenRatio}`;
 
                 // get the materials for global variables to be used in updating every read
                 currentBrownWeight = data.brownWeight;
@@ -56,20 +58,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // show text for adding divs
                 waitDiv.hidden = true;
-                inputDiv.style.display = "flex";
+                addLayerForm.hidden = false;
+                currentRatio.hidden = false;
+                ratioAfterAdding.hidden = false;
 
-                // change the material name and color to be seen by the user depending on material
-                material.textContent = currentMaterial;
-                if (currentMaterial == "Brown") {
-                    material.style.color = "#ffa500"
-                    brownMisting.style.display = "flex";
-                    greenMisting.style.display = "none";
-                }
-                else {
-                    material.style.color = "#00ff00";
-                    brownMisting.style.display = "none";
-                    greenMisting.style.display = "flex";
-                }
+                // change the material name to be seen by the user
+                material.textContent = `Your material is: ${currentMaterial}`;
+
+                // if compost can be finish unhide the button
+                finishButton.hidden = data.finish ? false : true;
 
                 // if there is no current in progress, create
                 createCompost();
@@ -78,7 +75,9 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => {
                 console.error(error);
                 // loop back to check layering if there is error
-                setTimeout(checkLayering, 1000);
+                setTimeout(function () {
+                    checkLayering();
+                }, 1000);
             });
     }
 
@@ -88,8 +87,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // this is process of waiting for esp32
     waitESP32 = () => {
         waitDiv.hidden = false;
-        alertMistDiv.hidden = true;
-        inputDiv.style.display = "none";
+        alertMixDiv.hidden = true;
+        addLayerForm.hidden = true;
+        currentRatio.hidden = true;
+        ratioAfterAdding.hidden = true;
 
         // go to initial function
         checkLayering();
@@ -107,11 +108,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (data.status == "error") return (window.location = './dashboard.html');
 
                 // if the data status is success, output the weight values in weightValue and lastbrown weight
+                const weightValue = document.getElementById("weightValue");
                 weightValue.value = (data.weight <= 0) ? "0" : data.weight;
                 lastBrownWeight.value = (data.weight <= 0) ? "0" : data.weight;
 
                 // get the brown and green ratio
-                let brownRatio = Number(currentBrownWeight > 0 ? 1 : ((data.weight < 0) ? 0 : data.weight));
+                let brownRatio = Number(currentBrownWeight > 0 ? 1 : data.weight);
                 let greenRatio;
 
                 // if brown, calculate by dividing the weight to green
@@ -120,77 +122,76 @@ document.addEventListener('DOMContentLoaded', function () {
                     greenRatio = Number(currentGreenWeight / (
                         (data.weight == 0 && currentBrownWeight == 0) ?
                             1 : (data.weight + currentBrownWeight)
-                    )
+                        )
                     ).toLocaleString();
                 }
-
+                
                 // if green, calculate by adding the weight to green
                 else if (currentMaterial == "Green") {
-                    greenRatio = Number((currentGreenWeight + data.weight) / currentBrownWeight).toLocaleString(); // limit the decimal
+                    greenRatio = Number( (currentGreenWeight + data.weight) / currentBrownWeight).toLocaleString(); // limit the decimal
                 }
-
+                
                 // prompt the ratio to the web
-                const afterBrownRatio = document.getElementById("afterBrownRatio");
-                const afterGreenRatio = document.getElementById("afterGreenRatio");
-                afterBrownRatio.textContent = (brownRatio < 100) ? brownRatio : "+99";
-                afterGreenRatio.textContent = (greenRatio == -0) ? 0 : greenRatio;
+                ratioAfterAdding.textContent = `Your current ratio after adding is: ${brownRatio} : ${greenRatio}`;
 
-                // =========================================================================================================
-                // // check if the submit buttons must be clickable or not depending on weight value and ratio
-                // submitFormButton.disabled = (data.weight <= 0) ? true : false;
-                // =========================================================================================================
+                // check if the submit buttons must be clickable or not depending on weight value and ratio
+                submitFormButton.disabled = (data.weight <= 0) ? true : false;
+                topBrownLayerButton.disabled = (data.weight <= 0) ? true : false;
+                if (finishButton) {
+                    // get the value of ratio depending on the high of ratio or lowness
+                    let finalLowBrownWeight = Number(( (currentGreenWeight + data.weight) / lowRatio) - currentBrownWeight).toLocaleString();
+                    let finalHighBrownWeight = Number(( (currentGreenWeight + data.weight) / highRatio) - currentBrownWeight).toLocaleString();
 
-
-                // topBrownLayerButton.disabled = (data.weight <= 0) ? true : false;
-                // if (finishButton) {
-                //     // get the value of ratio depending on the high of ratio or lowness
-                //     let finalLowBrownWeight = Number(( (currentGreenWeight + data.weight) / lowRatio) - currentBrownWeight).toLocaleString();
-                //     let finalHighBrownWeight = Number(( (currentGreenWeight + data.weight) / highRatio) - currentBrownWeight).toLocaleString();
-
-                //     // check ratios and weight if finish button should be done or not
-                //     finishButton.disabled = (data.weight <= 0 || greenRatio < lowRatio || finalLowBrownWeight < 100) ? true : false;
-                //     finishButton.textContent = `Finish up compost by adding this ${data.weight} green material and ${finalLowBrownWeight} to ${finalHighBrownWeight} top most brown material`;
-                // };
+                    // check ratios and weight if finish button should be done or not
+                    finishButton.disabled = (data.weight <= 0 || greenRatio < lowRatio || finalLowBrownWeight < 100) ? true : false;
+                    finishButton.textContent = `Finish up compost by adding this ${data.weight} green material and ${finalLowBrownWeight} to ${finalHighBrownWeight} top most brown material`;
+                };
 
                 // loop back to get new weight
-                setTimeout(checkLayering, 1000);
+                createCompost();
             })
             // error checker
             .catch(error => {
                 console.error(error);
                 // loop back to check layering if there is error
-                setTimeout(checkLayering, 1000);
+                setTimeout(function () {
+                    checkLayering();
+                }, 1000);
             });
     }
 
     // change the hidden element to show
-    mistRequest = () => {
-        alertMistDiv.hidden = false;
-        inputDiv.style.display = "none";
+    mixRequest = () => {
+        alertMixDiv.hidden = false;
+        addLayerForm.hidden = true;
+        currentRatio.hidden = true;
+        ratioAfterAdding.hidden = true;
+        topBrownLayerDiv.hidden = true;
     }
 
     // show only the div for top layer
     lastLayerFinish = () => {
-        alertMistDiv.hidden = true;
-        bottomLayerDiv.hidden = true;
-        inputDiv.style.display = "flex";
-        topBrownLayerDiv.hidden = false;
+        alertMixDiv.hidden = true;
         waitDiv.hidden = true;
+        addLayerForm.hidden = true;
+        topBrownLayerDiv.hidden = false;
+        currentRatio.hidden = false;
+        ratioAfterAdding.hidden = false;
 
         // request for weight
         createCompost();
     }
 
-    // if there is click on the submit button, proceed to creating the layer
-    submitFormButton.addEventListener('click', (ev) => {
+    // if there is click on the button done, proceed to creating the layer
+    addLayerForm.addEventListener('submit', (ev) => {
         // prevent website from loading
         ev.preventDefault();
 
-        // if there is no weight, exit
-        if (weightValue.value < 0) return;
+        // get the data from the form
+        const addLayer = new FormData(addLayerForm);
 
-        // create object as payload to put into database
-        const payload = { input_weightValue: weightValue.value };
+        // create object for each data in addLayerForm
+        const payload = Object.fromEntries(addLayer);
 
         // make a request to create layer
         fetch('../contexts/CreateLayerProcess.php', {
@@ -216,9 +217,9 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error(error));
     });
 
-    // if there is click to done button
-    startMistButton.addEventListener('click', () => {
-        // make a request to mist layer
+    // if there is click to mix the button
+    mixButton.addEventListener('click', () => {
+        // make a request to mix layer
         fetch('../contexts/RequestLayerWaterMixProcess.php')
             // get response as json
             .then(response => response.json())
@@ -226,6 +227,12 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 // if the setting up of hot compost is error, output it in console
                 if (data.status == "error") console.error(data.message);;
+
+                // change the form to show to the user
+                alertMixDiv.hidden = true;
+                addLayerForm.hidden = false;
+                currentRatio.hidden = false;
+                ratioAfterAdding.hidden = false;
 
                 // go back to check layering
                 checkLayering();
@@ -235,15 +242,12 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
     // if there is click on the finish button
-    finishButton.addEventListener('click', (ev) => {
-        // prevent website from loading
-        ev.preventDefault();
+    finishButton.addEventListener('click', () => {
+        // get the data from the form
+        const addLayer = new FormData(addLayerForm);
 
-        // if there is no weight, exit
-        if (weightValue.value < 0) return;
-
-        // create object as payload to put into database
-        const payload = { input_weightValue: weightValue.value };
+        // create object for each data in addLayerForm
+        const payload = Object.fromEntries(addLayer);
 
         // make a request to make the hot compost as in progress
         fetch('../contexts/CreateTopLayerProcess.php', {
@@ -263,7 +267,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (data.status == "error") console.error(data.message);;
 
                 // mix first before putting top layer
-                mistRequest();
+                mixRequest();
             })
             // error checker
             .catch(error => console.error(error));
