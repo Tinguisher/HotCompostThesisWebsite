@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // request for misting to esp32
-        fetch('../contexts/RequestMistingProcess.php', {
+        fetch('../contexts/RequestESP32Process.php', {
             method: "POST",
             headers: {
                 // state as a json type

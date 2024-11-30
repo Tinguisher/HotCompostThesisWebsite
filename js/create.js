@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const weightValue = document.getElementById("weightValue");
     const submitFormButton = document.getElementById("submitFormButton");
     const alertMistDiv = document.getElementById("alertMistDiv");
-    const startMistButton = document.getElementById("startMistButton");
     const topBrownLayerDiv = document.getElementById("topBrownLayerDiv");
     const lastBrownWeight = document.getElementById("lastBrownWeight");
 
@@ -31,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (data.message == "In Progress") return (window.location = './dashboard.html');
 
                 // if esp32 needs to process, wait for esp32
-                if (data.ESP32Process) return (waitESP32());                
+                if (data.ESP32Process) return (waitESP32());
 
                 // if there are brown and material consecutively, mist first before proceeding to next
                 if (data.mist) return (mistRequest());
@@ -63,12 +62,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (currentMaterial == "Brown") {
                     material.style.color = "#ffa500"
                     brownMisting.style.display = "flex";
-                    greenMisting.style.display = "none";
+                    greenMistingFinishup.style.display = "none";
                 }
                 else {
                     material.style.color = "#00ff00";
                     brownMisting.style.display = "none";
-                    greenMisting.style.display = "flex";
+                    greenMistingFinishup.style.display = "flex";
                 }
 
                 // if there is no current in progress, create
@@ -96,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // this is the process of making the hot compost pile
-    createCompost = () => {
+    function createCompost() {
         // make a request to esp32 to get weight
         fetch('../contexts/GetWeightProcess.php')
             // get response as json
@@ -153,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // };
 
                 // loop back to get new weight
-                setTimeout(checkLayering, 1000);
+                setTimeout(createCompost, 1000);
             })
             // error checker
             .catch(error => {
@@ -217,6 +216,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // if there is click to done button
+    const startMistButton = document.getElementById("startMistButton");
     startMistButton.addEventListener('click', () => {
         // make a request to mist layer
         fetch('../contexts/RequestLayerWaterMixProcess.php')
@@ -298,4 +298,63 @@ document.addEventListener('DOMContentLoaded', function () {
             // error checker
             .catch(error => console.error(error));
     })
+    
+    // get the buttons for misting
+    const brownMisting = document.getElementById("brownMisting");
+    const greenMisting = document.getElementById("greenMisting");
+
+    // if there is click on misting, go to misting options
+    brownMisting.addEventListener('click', () => {
+        mistingOptions();
+    })
+    greenMisting.addEventListener('click', () => {
+        mistingOptions();
+    })
+
+    // make a request and show necessary buttons
+    mistingOptions = () => {
+        let payload = {};
+
+        // get the value of each misting element
+        const useMistBrown = document.getElementById("useMistBrown");
+        const stopMistBrown = document.getElementById("stopMistBrown");
+        const useMistGreen = document.getElementById("useMistGreen");
+        const stopMistGreen = document.getElementById("stopMistGreen");
+
+        // toggle what to show when clicking the mist button
+        if (useMistBrown.style.display == "none") {
+            payload = { request: "Weight" };
+            useMistBrown.style.display = "inline-block";
+            useMistGreen.style.display = "flex";
+            stopMistBrown.style.display = "none";
+            stopMistGreen.style.display = "none";
+        }
+
+        else {
+            payload = { request: "WeightMistRequest" };
+            useMistBrown.style.display = "none";
+            useMistGreen.style.display = "none";
+            stopMistBrown.style.display = "inline-block";
+            stopMistGreen.style.display = "flex";
+        }
+
+        // request for misting to esp32
+        fetch('../contexts/RequestESP32Process.php', {
+            method: "POST",
+            headers: {
+                // state as a json type
+                'Content-Type': 'application/json; charset=utf-8'
+            },
+            // give the request as a JSON to the server
+            body: JSON.stringify(payload)
+        })
+            // get response as json
+            .then(response => response.json())
+            // get objects from fetch
+            .then(data => {
+                if (data.status == "success") {
+                    console.log("NOICE");
+                }
+            })
+    }
 });
