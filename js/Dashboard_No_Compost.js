@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 // if there is a compost already, go to dashboard with reading
                 if (data.message == "Read") return (window.location.href = './dashboard.html');
+
+                // loop back to check new updates
+                setTimeout(getLatestRecord, 1000);
             })
 
             // error checker
