@@ -42,7 +42,7 @@ try{
             FROM `hotcompost`
             WHERE status LIKE 'Layering'
             LIMIT 1
-        ), ?, ?, 'Bottom');";
+        ), ?, ?, 'Bottom Not Watered');";
 
     // prepare the statement
     $stmt = $mysqli->prepare($sql);
@@ -64,7 +64,7 @@ try{
             FROM `hotcompost`
             WHERE status LIKE 'Layering'
             LIMIT 1
-        ), 'Brown', 0, 'Top Layer');";
+        ), 'Brown', 0, 'Top Not Watered');";
 
     // prepare the statement
     $stmt = $mysqli->prepare($sql);

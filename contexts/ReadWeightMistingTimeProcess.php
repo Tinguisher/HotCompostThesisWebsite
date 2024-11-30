@@ -13,7 +13,7 @@ try{
                 WHERE status LIKE 'Layering'
                 LIMIT 1
             )
-            AND part IN ('MixingAccepted', 'MistingAccepted');";
+            AND part LIKE '%Misting Accepted';";
 
     // prepare the statement
     $stmt = $mysqli -> prepare ($sql);

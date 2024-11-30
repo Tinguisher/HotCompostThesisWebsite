@@ -13,7 +13,7 @@ try{
                 WHERE status LIKE 'Layering'
                 LIMIT 1
             )
-            AND layer.part IN ('MixRequest', 'MistingRequest', 'MixingAccepted', 'MistingAccepted')
+            AND layer.part IN ('Bottom Misting Request', 'Top Misting Request')
         LIMIT 1;";
 
     // prepare the statement
@@ -32,12 +32,8 @@ try{
     if (!$hotCompostRequested) exit("None");
 
     // if there are request from parts or, update to accepted
-    if ($hotCompostRequested['part'] == "MixRequest") include './RequestLayerMistMixProcess.php';
-    if ($hotCompostRequested['part'] == "MistingRequest") include './RequestLayerMistProcess.php';
-    if ($hotCompostRequested['part'] == "MixingAccepted") include './ReadLayeringTimeProcess.php';
-
-    // if hot compost is in mixting accepted, exit its status
-    exit ( $hotCompost['status'] );
+    if ($hotCompostRequested['part'] == "Bottom Misting Request") include './UpdateBottomRequestToAccepted.php';
+    if ($hotCompostRequested['part'] == "Top Misting Request") include './UpdateTopRequestToAccepted.php';
 }
 // if there is error in query
 catch (Exception $e){

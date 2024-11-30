@@ -41,7 +41,7 @@ $sql = "SELECT *
                     LIMIT 1
             )
             AND hotcompost.id = layer.hotcompost_id
-            AND layer.part IN ('MixRequest', 'MistingRequest', 'MixingAccepted', 'MistingAccepted');";
+            AND layer.part IN ('Bottom Misting Request', 'Bottom Misting Accepted', 'Top Misting Request', 'Top Misting Accepted');";
 
 // prepare the statement
 $stmt = $mysqli->prepare($sql);
@@ -63,7 +63,7 @@ $result->free();
 if (!$layer) {
     $layer = [
         'material' => "Green",
-        'part' => "Bottom"
+        'part' => "Bottom Not Watered"
     ];
 }
 
@@ -74,6 +74,6 @@ $layer['material'] = $layer['material'] == "Brown" ? "Green" : "Brown";
 $layer['ESP32Process'] = ($ESP32Process ? true: false);
 
 // if the layer part is top most, request for brown material
-if ($layer['part'] == "Top Layer") $layer['material'] = "Brown";
+if ($layer['part'] == "Top Not Watered") $layer['material'] = "Brown";
 
 ?>

@@ -37,7 +37,7 @@ $sql = "UPDATE `layer`
             WHERE status LIKE 'Layering'
             LIMIT 1
         )
-        AND `part` LIKE 'Top Layer';";
+        AND `part` LIKE 'Top Not Watered';";
 
 // try to get and catch if there is error
 try{

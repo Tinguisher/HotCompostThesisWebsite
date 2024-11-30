@@ -1,5 +1,5 @@
 <?php
-// make a string of sql to check if hot compost can be mist
+// make a string of sql to check if hot compost can be mist by 2 Bottom Not Watered
 $sql = "SELECT COUNT(layer.part) AS count
         FROM `hotcompost`,
             `layer`
@@ -9,7 +9,7 @@ $sql = "SELECT COUNT(layer.part) AS count
                     WHERE status LIKE 'Layering'
                     LIMIT 1
             )
-            AND part LIKE 'Bottom'
+            AND part LIKE 'Bottom Not Watered'
             AND hotcompost.id = layer.hotcompost_id;";
 
 // prepare the statement
@@ -37,7 +37,7 @@ $sql = "SELECT *
             WHERE status LIKE 'Layering'
             LIMIT 1
         )
-        AND part LIKE 'Top Layer';";
+        AND part LIKE 'Top Not Watered';";
 
 // prepare the statement
 $stmt = $mysqli->prepare($sql);
@@ -68,7 +68,7 @@ $layer['mist'] = $layerMixed['count'] >= 2 ? true : false;
 
 // if the request mist is false, check for top layer if it needs to be mist
 if ($layer['mist'] == false) {
-    // if there is weight already in the top error, make the mistbutton true
+    // if there is weight already in the top layer, make the mistbutton true
     $layer['mist'] = ($compostTopLayer['weight'] != 0) ? true : false;
 }
 

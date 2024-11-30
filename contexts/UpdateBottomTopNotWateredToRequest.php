@@ -7,10 +7,10 @@ $mysqli = require_once "./database.php";
 
 // try to create and catch if there is error
 try{
-    // make a string of sql to update part to MixRequest
+    // make a string of sql to update part to BottomMistingRequest
     $sql = "UPDATE `layer`
-    SET `part` = 'MixRequest'
-    WHERE `part` = 'Bottom'
+    SET `part` = 'Bottom Misting Request'
+    WHERE `part` = 'Bottom Not Watered'
         AND hotcompost_id = (
             SELECT id
                 FROM `hotcompost`
@@ -29,8 +29,8 @@ try{
 
     // make a string of sql to update part to MixRequest
     $sql = "UPDATE `layer`
-    SET `part` = 'MistingRequest'
-    WHERE `part` = 'Top Layer'
+    SET `part` = 'Top Misting Request'
+    WHERE `part` = 'Top Not Watered'
         AND weight > 0
         AND hotcompost_id = (
             SELECT id
@@ -48,25 +48,10 @@ try{
     // close the statement
     $stmt->close();
 
-    // make a string of sql to update part to MixRequest
-    $sql = "UPDATE `hotcompost`
-        SET `createdAt` = now(),
-            `lastMixed` = now()
-        WHERE status = 'Layering';";
-
-    // prepare the statement
-    $stmt = $mysqli->prepare($sql);
-
-    // execute the statement
-    $stmt->execute();
-
-    // close the statement
-    $stmt->close();
-
     // make a success response and give the new material to be input by the user
     $response = [
         'status' => "success",
-        'message' => "Requested for esp32 to water and mix"
+        'message' => "Requested for esp32 to water"
     ];
 }
 // if there is error in query

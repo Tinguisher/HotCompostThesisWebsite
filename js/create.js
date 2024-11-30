@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const afterBrownRatio = document.getElementById("afterBrownRatio");
                 const afterGreenRatio = document.getElementById("afterGreenRatio");
                 afterBrownRatio.textContent = (brownRatio < 100) ? brownRatio : "+99";
-                afterGreenRatio.textContent = (greenRatio == -0) ? 0 : greenRatio;
+                afterGreenRatio.textContent = greenRatio;
 
                 // =========================================================================================================
                 // // check if the submit buttons must be clickable or not depending on weight value and ratio
@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 // if the request data is error, go back to dashboard
                 if (data.status == "error") return (console.error(data.message));
-
+                
                 // go back to void of initial load to check new ratio etc
                 checkLayering();
             })
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const startMistButton = document.getElementById("startMistButton");
     startMistButton.addEventListener('click', () => {
         // make a request to mist layer
-        fetch('../contexts/RequestLayerWaterMixProcess.php')
+        fetch('../contexts/UpdateBottomTopNotWateredToRequest.php')
             // get response as json
             .then(response => response.json())
             // get objects from fetch
@@ -265,8 +265,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 // if the setting up of hot compost is error, output it in console
                 if (data.status == "error") console.error(data.message);;
 
-                // mix first before putting top layer
-                mistRequest();
+                // go back to check layering
+                checkLayering();
             })
             // error checker
             .catch(error => console.error(error));
