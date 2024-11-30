@@ -212,6 +212,10 @@ body {
     color: #ffa500; /* Orange color for Brown */
 }
 
+.green-text {
+    color: #00ff00; /* Green color for Green */
+}
+
 .red-text {
     color: #FF3D3D;
 }
@@ -298,7 +302,7 @@ input[type="text"] {
     background-color: #1F1B22;
     border: none;
     border-radius: 10px;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     cursor: pointer;
     color: #ffffff;
     width: 100%;
@@ -334,7 +338,7 @@ input[type="text"] {
     background-color: #bb0000;
     border: none;
     border-radius: 10px;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     cursor: pointer;
     color: #ffffff;
     width: 100%;

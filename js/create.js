@@ -105,27 +105,30 @@ document.addEventListener('DOMContentLoaded', function () {
                 // if the request data is error, go back to dashboard
                 if (data.status == "error") return (window.location = './dashboard.html');
 
+                // get the data.weight for verification if lower than 0, get 0 instead
+                let inputWeight = data.weight < 0 ? 0 : data.weight;
+
                 // if the data status is success, output the weight values in weightValue and lastbrown weight
-                weightValue.value = (data.weight <= 0) ? "0" : data.weight;
-                lastBrownWeight.value = (data.weight <= 0) ? "0" : data.weight;
+                weightValue.value = inputWeight;
+                lastBrownWeight.value = inputWeight;
 
                 // get the brown and green ratio
-                let brownRatio = Number(currentBrownWeight > 0 ? 1 : ((data.weight < 0) ? 0 : data.weight));
+                let brownRatio = Number(currentBrownWeight > 0 ? 1 : inputWeight);
                 let greenRatio;
 
                 // if brown, calculate by dividing the weight to green
                 if (currentMaterial == "Brown") {
                     // get the next green ratio
                     greenRatio = Number(currentGreenWeight / (
-                        (data.weight == 0 && currentBrownWeight == 0) ?
-                            1 : (data.weight + currentBrownWeight)
+                        (inputWeight == 0 && currentBrownWeight == 0) ?
+                            1 : (inputWeight + currentBrownWeight)
                     )
                     ).toLocaleString();
                 }
 
                 // if green, calculate by adding the weight to green
                 else if (currentMaterial == "Green") {
-                    greenRatio = Number((currentGreenWeight + data.weight) / currentBrownWeight).toLocaleString(); // limit the decimal
+                    greenRatio = Number((currentGreenWeight + inputWeight) / currentBrownWeight).toLocaleString(); // limit the decimal
                 }
 
                 // prompt the ratio to the web
@@ -298,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // error checker
             .catch(error => console.error(error));
     })
-    
+
     // get the buttons for misting
     const brownMisting = document.getElementById("brownMisting");
     const greenMisting = document.getElementById("greenMisting");
@@ -313,13 +316,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // make a request and show necessary buttons
     mistingOptions = () => {
-        let payload = {};
-
         // get the value of each misting element
         const useMistBrown = document.getElementById("useMistBrown");
         const stopMistBrown = document.getElementById("stopMistBrown");
         const useMistGreen = document.getElementById("useMistGreen");
         const stopMistGreen = document.getElementById("stopMistGreen");
+
+        let payload = {};
 
         // toggle what to show when clicking the mist button
         if (useMistBrown.style.display == "none") {
