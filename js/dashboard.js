@@ -21,13 +21,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // toggle what to show when clicking the mist button
         if (stopMisting.hidden == true) {
-            payload = {request: "MistRequest"};
+            payload = { request: "MistRequest" };
             stopMisting.hidden = false;
             useMisting.hidden = true;
         }
 
         else {
-            payload = {request: "None"};
+            payload = { request: "None" };
             stopMisting.hidden = true;
             useMisting.hidden = false;
         }
@@ -52,32 +52,45 @@ document.addEventListener('DOMContentLoaded', function () {
             })
     })
 
-    // get the status of current hot compost
-    fetch('../contexts/GetLatestRecordProcess.php')
-        // get response as json
-        .then(response => response.json())
-        // get objects from fetch
-        .then(data => {
-            // if there is no compost, go to dashboard with no compost
-            if (data.message == "Create") return (window.location.href = './Dashboard_No_Compost.html');
+    // get latest record function to be looped
+    function getLatestRecord() {
+        // get the status of current hot compost
+        fetch('../contexts/GetLatestRecordProcess.php')
+            // get response as json
+            .then(response => response.json())
+            // get objects from fetch
+            .then(data => {
+                // if there is no compost, go to dashboard with no compost
+                if (data.message == "Create") return (window.location.href = './Dashboard_No_Compost.html');
 
-            // get element ids for data to be input
-            const moisturePercentage = document.getElementById("moisturePercentage");
-            const temperatureCelsius = document.getElementById("temperatureCelsius");
-            const time = document.getElementById("time");
+                // get element ids for data to be input
+                const moisturePercentage = document.getElementById("moisturePercentage");
+                const temperatureCelsius = document.getElementById("temperatureCelsius");
+                const time = document.getElementById("time");
 
-            // put the values in the element
-            moisturePercentage.textContent = `${data.sensor.moisturePercent}%`;
-            temperatureCelsius.textContent = `${data.sensor.temperatureCelsius}°C`;
-            time.textContent = `TIME: ${data.sensor.time}`;
+                // put the values in the element
+                moisturePercentage.textContent = `${data.sensor.moisturePercent}%`;
+                temperatureCelsius.textContent = `${data.sensor.temperatureCelsius}°C`;
+                time.textContent = `TIME: ${data.sensor.time}`;
 
-            // if there is click in current history button, go to its sensor page
-            const currentHistoryButton = document.getElementById("currentHistoryButton");
-            currentHistoryButton.addEventListener('click', () => {
-                window.location.href = `./history_reading.html?compostID=${data.sensor.id}`
+                // if there is click in current history button, go to its sensor page
+                const currentHistoryButton = document.getElementById("currentHistoryButton");
+                currentHistoryButton.addEventListener('click', () => {
+                    window.location.href = `./history_reading.html?compostID=${data.sensor.id}`
+                })
+
+                // loop back to check new updates
+                setTimeout(getLatestRecord, 1000);
             })
-        })
 
-        // error checker
-        .catch(error => console.error(error));
+            // error checker
+            .catch(error => {
+                console.error(error);
+                // loop back to check new updates
+                setTimeout(getLatestRecord, 1000);
+            });
+    }
+
+    // go to get new record
+    getLatestRecord();
 });
