@@ -50,13 +50,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 currentGreenWeight = data.greenWeight;
                 currentMaterial = data.material;
 
-                // if the server requests for top most layer, add last layer to finish
-                if (data.topLayer) return (lastLayerFinish());
-
-                // show text for adding divs
-                waitDiv.hidden = true;
-                inputDiv.style.display = "flex";
-
                 // change the material name and color to be seen by the user depending on material
                 material.textContent = currentMaterial;
                 if (currentMaterial == "Brown") {
@@ -69,6 +62,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     brownMisting.style.display = "none";
                     greenMistingFinishup.style.display = "flex";
                 }
+
+                // if the server requests for top most layer, add last layer to finish
+                if (data.topLayer) return (lastLayerFinish());
+
+                // show text for adding divs
+                waitDiv.hidden = true;
+                inputDiv.style.display = "flex";
 
                 // if there is no current in progress, create
                 createCompost();
@@ -90,8 +90,8 @@ document.addEventListener('DOMContentLoaded', function () {
         alertMistDiv.hidden = true;
         inputDiv.style.display = "none";
 
-        // go to initial function
-        checkLayering();
+        // loop back to check layering
+        setTimeout(checkLayering, 1000);
     }
 
     // this is the process of making the hot compost pile
@@ -169,6 +169,9 @@ document.addEventListener('DOMContentLoaded', function () {
     mistRequest = () => {
         alertMistDiv.hidden = false;
         inputDiv.style.display = "none";
+
+        // loop back to check layering
+        setTimeout(checkLayering, 1000);
     }
 
     // show only the div for top layer
