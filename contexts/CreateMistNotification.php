@@ -12,24 +12,8 @@ try{
                 FROM `hotcompost`
                 WHERE status LIKE 'In Progress'
         )
-        , 'Mix', now());";
+        , 'Mist', now());";
 
-    // prepare the statement
-    $stmt = $mysqli -> prepare ($sql);
-
-    // execute the statement
-    $stmt -> execute();
-
-    // make a string of sql update in progress to mixing
-    $sql = "UPDATE `hotcompost`
-        SET `status` = 'Mixing',
-            `lastMixed` = now()
-        WHERE `id` = (
-                SELECT id
-                    FROM `hotcompost`
-                    WHERE status LIKE 'In Progress'
-            );";
-    
     // prepare the statement
     $stmt = $mysqli -> prepare ($sql);
 
@@ -41,7 +25,7 @@ try{
     $mysqli -> close();
 
     // make a success response
-    exit ("Successfully requested to mix the compost");
+    exit ("Misting Notification Sent");
 }
 // if there is error in query
 catch (Exception $e){

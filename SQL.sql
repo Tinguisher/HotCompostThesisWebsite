@@ -39,6 +39,7 @@ CREATE TABLE notification(
 	id int AUTO_INCREMENT NOT NULL,
 	hotcompost_id INT NOT NULL,
 	type varchar (50) NOT NULL,
+	time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	FOREIGN KEY (hotcompost_id) REFERENCES hotcompost(id)
 	ON DELETE CASCADE
     ON UPDATE CASCADE,

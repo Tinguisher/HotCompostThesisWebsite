@@ -20,8 +20,8 @@ $stmt -> close();
 
 // make a string of sql to update the hot compost in progress to mixing
 $sql = "INSERT INTO `notification`
-    (`hotcompost_id`, `type`) VALUES
-    (?, 'Mix');";
+    (`hotcompost_id`, `type`, `time`) VALUES
+    (?, 'Mix', now());";
 
 // prepare the statement
 $stmt = $mysqli -> prepare ($sql);
