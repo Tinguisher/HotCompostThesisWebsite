@@ -4,7 +4,23 @@ $mysqli = require_once "./database.php";
 
 // try to create and catch if there is error
 try{
-    // make a string of sql to put the weight reading to database
+    // make a string of sql to insert notification of mix
+    $sql = "INSERT INTO `notification`
+        (`hotcompost_id`, `type`) VALUES
+        ((
+            SELECT id
+                FROM `hotcompost`
+                WHERE status LIKE 'In Progress'
+        )
+        , 'Mix');";
+
+    // prepare the statement
+    $stmt = $mysqli -> prepare ($sql);
+
+    // execute the statement
+    $stmt -> execute();
+
+    // make a string of sql update in progress to mixing
     $sql = "UPDATE `hotcompost`
         SET `status` = 'Mixing',
             `lastMixed` = now()
