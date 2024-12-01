@@ -35,6 +35,17 @@ CREATE TABLE sensor(
     PRIMARY KEY (id)
 );
 
+CREATE TABLE notification(
+	id int AUTO_INCREMENT NOT NULL,
+	hotcompost_id INT NOT NULL,
+	type varchar (50) NOT NULL,
+	FOREIGN KEY (hotcompost_id) REFERENCES hotcompost(id)
+	ON DELETE CASCADE
+    ON UPDATE CASCADE,
+	CONSTRAINT PK_notification
+	PRIMARY KEY (id)
+);
+
 CREATE TABLE connection(
 	id int AUTO_INCREMENT NOT NULL,
 	weight double NOT NULL,
