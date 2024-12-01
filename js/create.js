@@ -3,7 +3,12 @@ document.addEventListener('DOMContentLoaded', function () {
     // get global variables to be manipulated
     const weightValue = document.getElementById("weightValue");
     const submitFormButton = document.getElementById("submitFormButton");
+    const submitFormButtonDisabled = document.getElementById("submitFormButtonDisabled");
+    const topBrownLayerButton = document.getElementById("topBrownLayerButton");
+    const topBrownLayerButtonDisabled = document.getElementById("topBrownLayerButtonDisabled");
     const alertMistDiv = document.getElementById("alertMistDiv");
+    const finishButton = document.getElementById("finishButton");
+    const finishButtonDisabled = document.getElementById("finishButtonDisabled");
     const topBrownLayerDiv = document.getElementById("topBrownLayerDiv");
     const lastBrownWeight = document.getElementById("lastBrownWeight");
 
@@ -137,22 +142,33 @@ document.addEventListener('DOMContentLoaded', function () {
                 afterBrownRatio.textContent = (brownRatio < 100) ? brownRatio : "+99";
                 afterGreenRatio.textContent = greenRatio;
 
-                // =========================================================================================================
-                // // check if the submit buttons must be clickable or not depending on weight value and ratio
-                // submitFormButton.disabled = (data.weight <= 0) ? true : false;
-                // =========================================================================================================
+                // hide buttons and show unclickable button if input weight is 0
+                if (inputWeight == 0) {
+                    submitFormButtonDisabled.hidden = false;
+                    topBrownLayerButtonDisabled.hidden = false;
+                    submitFormButton.hidden = true;
+                    topBrownLayerButton.hidden = true;
+                }
+                else {
+                    submitFormButtonDisabled.hidden = true;
+                    topBrownLayerButtonDisabled.hidden = true;
+                    submitFormButton.hidden = false;
+                    topBrownLayerButton.hidden = false;
+                }
 
+                // // get ratio needed for last
+                // let finalLowBrownWeight = Number(((currentGreenWeight + inputWeight) / lowRatio) - currentBrownWeight).toLocaleString();
+                let finalHighBrownWeight = Number(((currentGreenWeight + inputWeight) / highRatio) - currentBrownWeight).toLocaleString();
 
-                // topBrownLayerButton.disabled = (data.weight <= 0) ? true : false;
-                // if (finishButton) {
-                //     // get the value of ratio depending on the high of ratio or lowness
-                //     let finalLowBrownWeight = Number(( (currentGreenWeight + data.weight) / lowRatio) - currentBrownWeight).toLocaleString();
-                //     let finalHighBrownWeight = Number(( (currentGreenWeight + data.weight) / highRatio) - currentBrownWeight).toLocaleString();
-
-                //     // check ratios and weight if finish button should be done or not
-                //     finishButton.disabled = (data.weight <= 0 || greenRatio < lowRatio || finalLowBrownWeight < 100) ? true : false;
-                //     finishButton.textContent = `Finish up compost by adding this ${data.weight} green material and ${finalLowBrownWeight} to ${finalHighBrownWeight} top most brown material`;
-                // };
+                // check if finish should be clickable or not
+                if (finalHighBrownWeight < 100 || inputWeight == 0) {
+                    finishButton.style.display = "none";
+                    finishButtonDisabled.style.display = "flex";
+                }
+                else {
+                    finishButton.style.display = "flex";
+                    finishButtonDisabled.style.display = "none";
+                }
 
                 // loop back to get new weight
                 setTimeout(createCompost, 1000);
@@ -213,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 // if the request data is error, go back to dashboard
                 if (data.status == "error") return (console.error(data.message));
-                
+
                 // go back to void of initial load to check new ratio etc
                 checkLayering();
             })
@@ -276,7 +292,6 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
     // if there is click in the top brown layer button
-    const topBrownLayerButton = document.getElementById("topBrownLayerButton");
     topBrownLayerButton.addEventListener('click', () => {
         // put the weight value into payload
         const payload = { input_topBrown: lastBrownWeight.value };
