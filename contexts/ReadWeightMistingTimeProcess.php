@@ -4,7 +4,7 @@ $mysqli = require_once "./database.php";
 
 // try to create and catch if there is error
 try{
-    // make a string of sql to get hot compost in progress
+    // make a string of sql to get sum of weight that are needs to be misting
     $sql = "SELECT SUM(weight) AS total_weight
         FROM `layer`
         WHERE hotcompost_id = (
