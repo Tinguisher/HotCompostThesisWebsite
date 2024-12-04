@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 createNotificationRows(data.notifications);
 
                 // if the status of compost is mixing, play the buzzer
-                if (data.sensor.status == "Mixing"){
+                if (data.sensor.status == "Mixing") {
                     const buzzer = new Audio('../assets/Buzzer sound effect.mp3');
                     buzzer.play();
                 }
@@ -143,8 +143,43 @@ document.addEventListener('DOMContentLoaded', function () {
         else {
             notificationButton.style.filter = yellowBell;
             notificationPopOut.style.display = "flex";
-            
         }
+    })
+
+    // if there is click in cancel button, toggle to verification
+    const cancelButton = document.getElementById("cancelButton");
+    const mainDashboard = document.getElementById("mainDashboard");
+    const cancelCompost = document.getElementById("cancelCompost");
+
+    cancelButton.addEventListener('click', () => {
+        mainDashboard.style.display = "none";
+        cancelCompost.style.display = "flex";
+    })
+
+    const buttonYes = document.getElementById("buttonYes");
+    buttonYes.addEventListener('click', () => {
+        // make a request to cancel the compost
+        fetch('../contexts/UpdateInProgToCancelled.php')
+            // get response as json
+            .then(response => response.json())
+            // get objects from fetch
+            .then(data => {
+                // if the status is error, output in console
+                if (data.status == "error") return ( console.error(data.message) );
+
+                // go to no compost since already cancelled
+                window.location.href = './Dashboard_No_Compost.html'
+            })
+
+            // error checker
+            .catch(error => console.error(error));
+
+    })
+
+    const buttonNo = document.getElementById("buttonNo");
+    buttonNo.addEventListener('click', () => {
+        mainDashboard.style.display = "flex";
+        cancelCompost.style.display = "none";
     })
 
     // go to get new record

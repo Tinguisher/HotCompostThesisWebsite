@@ -48,6 +48,10 @@ body {
     cursor: pointer;
 }
 
+.main-dashboard {
+    display: flex;
+}
+
 .dashboard {
     display: flex;
     gap: 60px;
@@ -59,6 +63,7 @@ body {
 }
 
 .status-section {
+    position: relative;
     background-color: #1F1B22;
     border-radius: 20px;
     padding: 50px;
@@ -68,6 +73,12 @@ body {
     gap: 20px;
     width: 55%;
     height: 500px;
+}
+
+.cancelButton {
+    position: absolute;
+    display: flex;
+    align-self: flex-end;
 }
 
 .status-icons {
@@ -174,6 +185,29 @@ body {
     padding-right: 25px;
     display: flex;
     justify-content: space-between;
+}
+
+.cancel-compost {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.verification-message {
+
+}
+
+.button-yes {
+    background-color: #008100;
+    color: white;
+    border-radius: 20px;
+}
+
+.button-no {
+    background-color: #353138;
+    color: white;
+    border-radius: 20px;
 }
 
 
@@ -298,7 +332,7 @@ body {
     .timestamp {
         font-size: 14px;
     }
-    
+
     .buttons-box {
         width: fit-content;
         padding: 20px;

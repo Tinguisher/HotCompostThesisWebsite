@@ -18,61 +18,73 @@
         </div>
         <h1>AutoComp</h1>
         <img id="notificationButton" src="../assets/notification.png" alt="Notification Icon" class="notification-icon">
+        <div id="notificationPopOut" class="notification-popout">
+            <h1 class="notification-text">Notifications</h1>
+            <img src="../assets/Line 2.png" alt="Line" class="notification-line">
+            <div class="notification-container" data-notification-container>
+                <div class="notification-individual">
+                    <p class="notification-type">Loading...</p>
+                    <p class="notification-type">Loading...</p>
+                </div>
+            </div>
+            <template data-notification-template>
+                <div>
+                    <div class="notification-individual">
+                        <p data-type>Loading...</p>
+                        <p data-time>Loading...</p>
+                    </div>
+                    <img src="../assets/Line 2.png" alt="Line" class="notification-line">
+                </div>
+            </template>
+        </div>
     </header>
     <!-- Main Dashboard Section -->
-    <main class="dashboard">
-        <section class="status-section">
-            <div class="status-icons">
-                <div class="humidity">
-                    <img src="../assets/moist icon.png" alt="Moisture Icon" class="icon">
-                    <p id="moisturePercentage" class="value">69%</p>
+    <div id="mainDashboard" class="main-dashboard">
+        <main class="dashboard">
+            <section class="status-section">
+                <button id="cancelButton" class="cancel-button">Cancel Compost</button>
+                <div class="status-icons">
+                    <div class="humidity">
+                        <img src="../assets/moist icon.png" alt="Moisture Icon" class="icon">
+                        <p id="moisturePercentage" class="value">69%</p>
+                    </div>
+                    <div class="temperature">
+                        <img src="../assets/temp icon.png" alt="Temperature Icon" class="icon">
+                        <p id="temperatureCelsius" class="value">-127°C</p>
+                    </div>
                 </div>
-                <div class="temperature">
-                    <img src="../assets/temp icon.png" alt="Temperature Icon" class="icon">
-                    <p id="temperatureCelsius" class="value">-127°C</p>
+                <div class="timestamp">
+                    <p id="time">TIME: 2024-10-19 | 11:10:55</p>
                 </div>
-            </div>
-            <div class="timestamp">
-                <p id="time">TIME: 2024-10-19 | 11:10:55</p>
-            </div>
-        </section>
+            </section>
 
-        <section class="buttons-box">
-            <div class="buttons-section">
-                <button id="historyCompostButton" class="button">
-                    <img src="../assets/prev_compost_button.png" alt="Previous Compost History">
-                </button>
-                <button id="currentHistoryButton" class="button">
-                    <img src="../assets/view_current_compost_history_button.png" alt="View Current Compost History">
-                </button>
-                <button id="useNPKButton" class="button">
-                    <img src="../assets/use_npk_button.png" alt="Use NPK">
-                </button>
-                <button id="mistButton" class="button">
-                    <img id="useMisting" src="../assets/use misting button.png" alt="Use Misting">
-                    <img id="stopMisting" src="../assets/StopMisting.png" alt="Stop Misting" hidden>
-                </button>
-            </div>
-        </section>
-    </main>
-    <div id="notificationPopOut" class="notification-popout">
-        <h1 class="notification-text">Notifications</h1>
-        <img src="../assets/Line 2.png" alt="Line" class="notification-line">
-        <div class="notification-container" data-notification-container>
-            <div class="notification-individual">
-                <p class="notification-type">Loading...</p>
-                <p class="notification-type">Loading...</p>
-            </div>
-        </div>
-        <template data-notification-template>
-            <div>
-                <div class="notification-individual">
-                    <p data-type>Loading...</p>
-                    <p data-time>Loading...</p>
+            <section class="buttons-box">
+                <div class="buttons-section">
+                    <button id="historyCompostButton" class="button">
+                        <img src="../assets/prev_compost_button.png" alt="Previous Compost History">
+                    </button>
+                    <button id="currentHistoryButton" class="button">
+                        <img src="../assets/view_current_compost_history_button.png" alt="View Current Compost History">
+                    </button>
+                    <button id="useNPKButton" class="button">
+                        <img src="../assets/use_npk_button.png" alt="Use NPK">
+                    </button>
+                    <button id="mistButton" class="button">
+                        <img id="useMisting" src="../assets/use misting button.png" alt="Use Misting">
+                        <img id="stopMisting" src="../assets/StopMisting.png" alt="Stop Misting" hidden>
+                    </button>
                 </div>
-                <img src="../assets/Line 2.png" alt="Line" class="notification-line">
-            </div>
-        </template>
+            </section>
+        </main>
+    </div>
+
+    <!-- Cancel Compost -->
+    <div id="cancelCompost" class="cancel-compost">
+        <h1 class="verification-message">DO YOU WANT TO CANCEL YOUR COMPOST?</h1>
+        <div class="button-container">
+            <button id="buttonYes" class="button-yes">Yes</button>
+            <button id="buttonNo" class="button-no">No</button>
+        </div>
     </div>
 </body>
 <script src="../js/dashboard.js"> </script>
