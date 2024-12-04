@@ -17,7 +17,7 @@
             <img src="../assets/Thesis Logo.png" alt="Logo">
         </div>
         <h1>AutoComp</h1>
-        <img src="../assets/notification.png" alt="Notification Icon" class="notification-icon">
+        <img id="notificationButton" src="../assets/notification.png" alt="Notification Icon" class="notification-icon">
     </header>
     <!-- Main Dashboard Section -->
     <main class="dashboard">
@@ -55,52 +55,24 @@
             </div>
         </section>
     </main>
-    <div class="notification-popout">
+    <div id="notificationPopOut" class="notification-popout">
         <h1 class="notification-text">Notifications</h1>
         <img src="../assets/Line 2.png" alt="Line" class="notification-line">
         <div class="notification-container" data-notification-container>
-            <template data-notification-template>
+            <div class="notification-individual">
+                <p class="notification-type">Loading...</p>
+                <p class="notification-type">Loading...</p>
+            </div>
+        </div>
+        <template data-notification-template>
+            <div>
                 <div class="notification-individual">
-                    <p class="notification-type">Loading...</p>
-                    <p class="notification-type">Loading...</p>
+                    <p data-type>Loading...</p>
+                    <p data-time>Loading...</p>
                 </div>
                 <img src="../assets/Line 2.png" alt="Line" class="notification-line">
-            </template>
-            <div class="notification-individual">
-                <p class="notification-type">Loading...</p>
-                <p class="notification-type">Loading...</p>
             </div>
-
-
-
-
-            
-            <img src="../assets/Line 2.png" alt="Line" class="notification-line">
-            <div class="notification-individual">
-                <p class="notification-type">hehe</p>
-                <p class="notification-type">no</p>
-            </div>
-            <img src="../assets/Line 2.png" alt="Line" class="notification-line">
-            <div class="notification-individual">
-                <p class="notification-type">hehe</p>
-                <p class="notification-type">no</p>
-            </div>
-            <img src="../assets/Line 2.png" alt="Line" class="notification-line">
-            <div class="notification-individual">
-                <p class="notification-type">hehe</p>
-                <p class="notification-type">no</p>
-            </div>
-            <img src="../assets/Line 2.png" alt="Line" class="notification-line">
-            <div class="notification-individual">
-                <p class="notification-type">hehe</p>
-                <p class="notification-type">no</p>
-            </div>
-            <img src="../assets/Line 2.png" alt="Line" class="notification-line">
-
-        </div>
-        
-        
-
+        </template>
     </div>
 </body>
 <script src="../js/dashboard.js"> </script>
