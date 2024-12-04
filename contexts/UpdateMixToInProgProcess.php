@@ -1,5 +1,5 @@
 <?php
-// make a string of sql to check if the mixing can be stop after 5mins
+// make a string of sql to check if the mixing can be stop after 10mins
 $sql = "SELECT *
         FROM `hotcompost`
         WHERE id = ?
