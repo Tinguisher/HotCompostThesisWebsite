@@ -79,6 +79,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     window.location.href = `./history_reading.html?compostID=${data.sensor.id}`
                 })
 
+                // create a notification
+                createNotificationRows(data.notifications);
+
                 // if the status of compost is mixing, play the buzzer
                 if (data.sensor.status == "Mixing"){
                     const buzzer = new Audio('../assets/Buzzer sound effect.mp3');
@@ -95,6 +98,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 // loop back to check new updates
                 setTimeout(getLatestRecord, 3000);
             });
+    }
+
+    // process of creating each notifications
+    createNotificationRows = (notifications) => {
+
     }
 
     // go to get new record

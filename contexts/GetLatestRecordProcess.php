@@ -5,21 +5,21 @@ header('Content-Type: application/json; charset=utf-8');
 // access database
 $mysqli = require_once "./database.php";
 
-// create a sql to get most recent reading of sensors that are in progress
-$sql = "SELECT hotcompost.id,
-        hotcompost.status,
-        sensor.moisturePercent,
-        sensor.temperatureCelsius,
-        sensor.time
-    FROM `hotcompost`,
-        `sensor`
-    WHERE hotcompost.id = sensor.hotcompost_id
-        AND hotcompost.status IN ('In Progress', 'Mixing')
-    ORDER BY sensor.time DESC
-    LIMIT 1";
-
 // try to get and catch if there is error
 try{
+    // create a sql to get most recent reading of sensors that are in progress
+    $sql = "SELECT hotcompost.id,
+            hotcompost.status,
+            sensor.moisturePercent,
+            sensor.temperatureCelsius,
+            sensor.time
+        FROM `hotcompost`,
+            `sensor`
+        WHERE hotcompost.id = sensor.hotcompost_id
+        AND hotcompost.status IN ('In Progress', 'Mixing')
+        ORDER BY sensor.time DESC
+        LIMIT 1";
+
     // prepare the statement
     $stmt = $mysqli -> prepare ($sql);
 
@@ -32,11 +32,37 @@ try{
     // get one values from the database
     $hotCompostReading = $result -> fetch_assoc();
 
+    // free data and close statement
+    $result -> free();
+    $stmt -> close();
+
+    // create a sql to get notifications of hot compost
+    $sql = "SELECT notification.type,
+            notification.time
+        FROM `hotcompost`,
+            `notification`
+        WHERE hotcompost.id = notification.hotcompost_id
+        AND hotcompost.status IN ('In Progress', 'Mixing')
+        ORDER BY notification.time DESC;";
+        
+    // prepare the statement
+    $stmt = $mysqli -> prepare ($sql);
+
+    // execute the statement
+    $stmt -> execute();
+
+    // get the result from the statement
+    $result = $stmt -> get_result();
+
+    // get all from the executed statement
+    $hotCompostNotifications = $result -> fetch_all( MYSQLI_ASSOC );
+
     // response message is dependent if there is hot compost in progress
     $response = $hotCompostReading ? [
         'status' => "success",
         'message' => "Read",
-        'sensor' => $hotCompostReading
+        'sensor' => $hotCompostReading,
+        'notifications' => $hotCompostNotifications
     ] : [
         'status' => "success",
         'message' => "Create"

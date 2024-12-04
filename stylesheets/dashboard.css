@@ -140,6 +140,46 @@ body {
     height: auto;
 }
 
+.notification-popout {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 697px;
+    height: auto;
+    background-color: #1F1B22;
+    border-radius: 20px;
+    padding-bottom: 20px;
+}
+
+.notification-text {
+    margin-left: 40px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.notification-popout img {
+    width: 625px;
+    margin: 0 auto;
+    margin-bottom: 5px;
+}
+
+.notification-container {
+    width: 625px;
+    margin: 0 auto;
+    margin-top: 10px
+}
+
+.notification-individual {
+    display: flex;
+    justify-content: space-between;
+}
+
+.notification-type {
+
+}
+
+
+
 @media (max-width: 768px) {
     .header {
         justify-content: center;
