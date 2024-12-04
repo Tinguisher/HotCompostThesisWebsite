@@ -7,6 +7,7 @@ $mysqli = require_once "./database.php";
 
 // create a sql to get most recent reading of sensors that are in progress
 $sql = "SELECT hotcompost.id,
+        hotcompost.status,
         sensor.moisturePercent,
         sensor.temperatureCelsius,
         sensor.time

@@ -79,15 +79,21 @@ document.addEventListener('DOMContentLoaded', function () {
                     window.location.href = `./history_reading.html?compostID=${data.sensor.id}`
                 })
 
+                // if the status of compost is mixing, play the buzzer
+                if (data.sensor.status == "Mixing"){
+                    const buzzer = new Audio('../assets/Buzzer sound effect.mp3');
+                    buzzer.play();
+                }
+
                 // loop back to check new updates
-                setTimeout(getLatestRecord, 1000);
+                setTimeout(getLatestRecord, 3000);
             })
 
             // error checker
             .catch(error => {
                 console.error(error);
                 // loop back to check new updates
-                setTimeout(getLatestRecord, 1000);
+                setTimeout(getLatestRecord, 3000);
             });
     }
 
