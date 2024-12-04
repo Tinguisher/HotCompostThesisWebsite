@@ -22,7 +22,7 @@ $stmt->execute();
 $result = $stmt -> get_result();
 
 // get only one from the executed statement
-$layerMixed = $result->fetch_assoc();
+$layerMisted = $result->fetch_assoc();
 
 // close statement and free the result
 $stmt->close();
@@ -64,7 +64,7 @@ if (!$compostTopLayer) {
 }
 
 // if the green and brown material is not watered, request for the mist before proceeding
-$layer['mist'] = $layerMixed['count'] >= 2 ? true : false;
+$layer['mist'] = $layerMisted['count'] >= 2 ? true : false;
 
 // if the request mist is false, check for top layer if it needs to be mist
 if ($layer['mist'] == false) {
