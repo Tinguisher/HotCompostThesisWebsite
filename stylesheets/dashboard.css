@@ -195,19 +195,30 @@ body {
 }
 
 .verification-message {
-
+    font-weight: 800;
+    font-size: 96px;
 }
 
 .button-yes {
+    width: 321px;
+    height: 66px;
     background-color: #008100;
     color: white;
+    border: none;
     border-radius: 20px;
+    font-size: 48px;
+    cursor: pointer;
 }
 
 .button-no {
+    width: 321px;
+    height: 66px;
     background-color: #353138;
     color: white;
+    border: none;
     border-radius: 20px;
+    font-size: 48px;
+    cursor: pointer;
 }
 
 
