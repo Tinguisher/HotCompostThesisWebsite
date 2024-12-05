@@ -48,10 +48,6 @@ body {
     cursor: pointer;
 }
 
-.main-dashboard {
-    display: flex;
-}
-
 .dashboard {
     display: flex;
     gap: 60px;
@@ -70,15 +66,24 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
     width: 55%;
     height: 500px;
 }
 
-.cancelButton {
-    position: absolute;
-    display: flex;
-    align-self: flex-end;
+.cancel-button {
+    width: 175px;
+    height: 40px;
+    background-color: #353138;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.cancel-button:hover {
+    transform: scale(1.05);
 }
 
 .status-icons {
@@ -160,6 +165,8 @@ body {
     background-color: #1F1B22;
     border-radius: 20px;
     padding-bottom: 20px;
+    right: 8px;
+    bottom: -475px;
 }
 
 .notification-text {
@@ -195,8 +202,10 @@ body {
 }
 
 .verification-message {
+    text-align: center;
     font-weight: 800;
-    font-size: 96px;
+    font-size: 70px;
+    padding: 106px;
 }
 
 .button-yes {
