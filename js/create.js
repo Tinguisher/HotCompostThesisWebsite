@@ -23,6 +23,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var lowRatio = greenVolume / (2 * brownVolume);
     var highRatio = greenVolume / (3 * brownVolume);
 
+    // if there is click in logo, go to dashboard
+    const logoButton = document.getElementById("logoButton");
+    logoButton.addEventListener('click', () => {
+        window.location = '../pages/dashboard.html';
+    })
+
     // function to be repeated in initial and after water and mix
     function checkLayering() {
         // get if there is a need to use weight sensor to create hotcompost
