@@ -33,7 +33,7 @@ try{
         FROM `hotcompost`
         WHERE id = ?
             AND status LIKE 'In Progress'
-            AND createdAt < now() - interval 18 day;";
+            AND createdAt < now() - interval 10 minute;";
 
     // prepare the statement
     $stmt = $mysqli -> prepare ($sql);
@@ -58,8 +58,8 @@ try{
         FROM `hotcompost`
         WHERE id = ?
             AND status LIKE 'In Progress'
-            AND createdAt < now() - interval 4 day
-            AND lastMixed < now() - interval 2 day;";
+            AND createdAt < now() - interval 2 minute
+            AND lastMixed < now() - interval 30 second;";
 
     // prepare the statement
     $stmt = $mysqli -> prepare ($sql);

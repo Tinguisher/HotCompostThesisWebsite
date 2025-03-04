@@ -46,7 +46,7 @@ try{
         FROM `sensor`, `hotcompost`
         WHERE sensor.hotcompost_id = hotcompost.id
             AND hotcompost.id = ?
-            AND sensor.time > now() - interval 1 hour;";
+            AND sensor.time > now() - interval 5 second;";
 
     // prepare the statement
     $stmt = $mysqli -> prepare ($sql);

@@ -4,7 +4,7 @@ $sql = "SELECT *
         FROM `hotcompost`
         WHERE id = ?
             AND status LIKE 'Mixing'
-            AND lastMixed < now() - interval 10 minute;";
+            AND lastMixed < now() - interval 10 second;";
 
 // prepare the statement
 $stmt = $mysqli->prepare($sql);
