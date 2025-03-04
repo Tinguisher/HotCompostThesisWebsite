@@ -328,9 +328,12 @@ double getmoisturePercent() {
   // get the value from the moisture sensor and return it
   double moistureValue1 = analogRead(moistureSensor1);
   double moistureValue2 = analogRead(moistureSensor2);
-  double moisturePercent1 = (1 - (moistureValue1 / 2500)) * 100;
-  double moisturePercent2 = (1 - (moistureValue2 / 1094)) * 100;
-  double moisturePercent = (moisturePercent1 + moisturePercent2) / 2;
+  // double moisturePercent1 = (1 - (moistureValue1 / 2500)) * 100;
+  // double moisturePercent2 = (1 - (moistureValue2 / 1094)) * 100;
+  // double moisturePercent = (moisturePercent1 + moisturePercent2) / 2;
+
+  double moisturePercent = (1 - (moistureValue2 / 2642)) * 100;     // one moisture
+
   return moisturePercent;
 }
 
@@ -341,7 +344,7 @@ float gettemperatureC() {
   float temperatureC1 = sensors1.getTempCByIndex(0);        // Read temperature in Celsius
   float temperatureC2 = sensors2.getTempCByIndex(0);        // Read temperature in Celsius
 
-  // float temperatureC = (temperatureC1 + temperatureC2) / 2; // two sensoraverage
+  // float temperatureC = (temperatureC1 + temperatureC2) / 2; // two sensor average
   // temperatureC = temperatureC + 4.86;                       // calibration 4.86
 
   float temperatureC = temperatureC1 + 4.86;                  // only one sensor + callibration
